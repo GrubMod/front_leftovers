@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Nav from './components/Nav';
 import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
+import BookForm from './components/BookForm';
 import './App.css';
 
 // Code created by Dakota Lillie
@@ -19,7 +20,7 @@ class App extends Component {
 
   componentDidMount() {
     if (this.state.logged_in) {
-      fetch('http://localhost:8000/core/current_user/', {
+      fetch('http://localhost:8000/current-user/', {
         headers: {
           Authorization: `JWT ${localStorage.getItem('token')}`
         }
@@ -108,6 +109,8 @@ class App extends Component {
             ? `Hello, ${this.state.username}`
             : 'Please Log In'}
         </h3>
+
+        {this.state.logged_in ? <BookForm /> : ''}
       </div>
     );
   }
