@@ -51,25 +51,25 @@ class App extends Component {
       });
   };
 
-  handle_signup = (e, data) => {
-    e.preventDefault();
-    fetch('http://localhost:8000/core/users/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-      .then(res => res.json())
-      .then(json => {
-        localStorage.setItem('token', json.token);
-        this.setState({
-          logged_in: true,
-          displayed_form: '',
-          username: json.username
-        });
-      });
-  };
+  // handle_signup = (e, data) => {
+  //   e.preventDefault();
+  //   fetch('http://localhost:8000/core/users/', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify(data)
+  //   })
+  //     .then(res => res.json())
+  //     .then(json => {
+  //       localStorage.setItem('token', json.token);
+  //       this.setState({
+  //         logged_in: true,
+  //         displayed_form: '',
+  //         username: json.username
+  //       });
+  //     });
+  // };
 
   handle_logout = () => {
     localStorage.removeItem('token');

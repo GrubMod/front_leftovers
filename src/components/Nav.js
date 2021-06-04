@@ -23,3 +23,4 @@ Nav.propTypes = {
   display_form: PropTypes.func.isRequired,
   handle_logout: PropTypes.func.isRequired
 };
+
