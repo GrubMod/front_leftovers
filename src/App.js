@@ -4,6 +4,9 @@ import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
 import './App.css';
 
+// Code created by Dakota Lillie
+// https://medium.com/@dakota.lillie/django-react-jwt-authentication-5015ee00ef9a
+
 class App extends Component {
   constructor(props) {
     super(props);
