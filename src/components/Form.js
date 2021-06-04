@@ -1,13 +1,7 @@
-import React, {useEffect} from 'react';
-import {useCookies, Cookies} from 'react-cookie'
+import React from 'react';
 import axios from 'axios'
 
 function Form(props) {
-    // const [cookies, setCookie, removeCookie] = useCookies(['cookie-name'])
-    // useEffect(() => {
-    //     var csrfCookie = Cookies.get('XSRF-TOKEN');
-    //     console.log(csrfCookie)  
-    // }, [Cookies])
     const signUp=(e)=>{
         e.preventDefault()
         const formData = e.target

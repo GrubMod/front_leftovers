@@ -1,16 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios'
 import Form from './Form'
+import Login from './Login'
 
 
 function Body(props) {
-    const [book, setBook] = useState([])
+    const [books, setBooks] = useState([])
 
     useEffect(() => {
         function getBook() {
             axios.get('http://localhost:8000/books/')
             .then(res => {
-                setBook(res.data)
+                setBooks(res.data)
                 console.log(res.data)
             })
             .catch(console.error)
@@ -20,6 +21,7 @@ function Body(props) {
     return (
         <div>
             <Form />
+            <Login />
         </div>
     );
 }
