@@ -9,13 +9,15 @@ import './App.css';
 // https://medium.com/@dakota.lillie/django-react-jwt-authentication-5015ee00ef9a
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      displayed_form: '',
-      logged_in: localStorage.getItem('token') ? true : false,
-      username: ''
-    };
+
+  state = {
+    displayed_form: '',
+    logged_in: localStorage.getItem('token') ? true : false,
+    username: ''
+  };
+
+  catchError = ( error ) => {
+    console.log( error )
   }
 
   componentDidMount() {
@@ -25,10 +27,22 @@ class App extends Component {
           Authorization: `JWT ${localStorage.getItem('token')}`
         }
       })
-        .then(res => res.json())
+        .then( res => {
+           if(!Response.ok){
+            this.catchError(res)
+            localStorage.removeItem('token');
+            this.setState({
+              displayed_form: '',
+              logged_in: localStorage.getItem('token') ? true : false,
+              username: ''
+            });
+          }else{
+            return res.json()
+          }})
         .then(json => {
           this.setState({ username: json.username });
-        });
+        })
+        .catch(err => console.log("THIS IS THE ERROR", err));
     }
   }
 
