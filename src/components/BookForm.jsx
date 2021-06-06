@@ -1,8 +1,8 @@
 import React from 'react';
 import axios from 'axios'
 
-function Book(props) {
-    const createBook=(e)=>{
+function BookForm({setBooks, books}) {
+    const createBook=(e, books)=>{
         e.preventDefault()
         const formData = e.target
         const newBook= {
@@ -18,13 +18,14 @@ function Book(props) {
         }
         axios.post('http://localhost:8000/books/', newBook, config)
         .then(res => {
-            console.log('THIS IS THE BOOK CREATION RESPONSE', res)
+            const newbooks = [res.data].concat(books)
+            setBooks(newbooks)
+            console.log('THIS IS THE BOOK CREATION RESPONSE', res.data)
         })
     }
     return (
         <div>
-            <p>Must be logged in to work!</p>
-            <form onSubmit={createBook}>
+            <form onSubmit={e => createBook(e, books)}>
                 <label>Title</label>
                 <input type= 'text' name="title"/>
                 <label>Year</label>
@@ -37,4 +38,4 @@ function Book(props) {
     );
 }
 
-export default Book;
+export default BookForm;
