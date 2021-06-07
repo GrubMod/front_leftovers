@@ -16,7 +16,7 @@ function BookForm({setBooks, books}) {
                 'Content-Type': 'application/json'
             }
         }
-        axios.post('http://localhost:8000/books/', newBook, config)
+        axios.post('http://localhost:8000/books/books/', newBook, config)
         .then(res => {
             const newbooks = [res.data].concat(books)
             setBooks(newbooks)

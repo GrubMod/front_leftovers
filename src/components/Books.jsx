@@ -12,7 +12,7 @@ function Books(props) {
 
     useEffect(() => {
         function getBook() {
-            axios.get('http://localhost:8000/books/')
+            axios.get('http://localhost:8000/books/books/')
             .then(res => {
                 setBooks(res.data)
                 console.log(res.data)
