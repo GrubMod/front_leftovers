@@ -6,7 +6,7 @@ import AuthButtons from './AuthButtons';
 
 const NavBar = () => {
   
-  const {state, setState} = useContext(LeftoverContext);
+  const {state, setState, api_url} = useContext(LeftoverContext);
   const [ form, setForm ] = useState(null)
   const [ formType, setFormType ] = useState(null)
 
@@ -14,7 +14,7 @@ const NavBar = () => {
 
   const handleLogin = useCallback((e, data) => {
     e.preventDefault();
-    fetch('http://localhost:8000/token-auth/', {
+    fetch(`${ api_url }/token-auth/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -30,11 +30,11 @@ const NavBar = () => {
         });
         setForm('')
       });
-  }, [setState, setForm])
+  }, [setState, setForm, api_url])
 
   const handleSignup = useCallback((e, data) => {
     e.preventDefault();
-    fetch('http://localhost:8000/account/register/', {
+    fetch(`${ api_url }/account/register/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -55,7 +55,7 @@ const NavBar = () => {
         // });
         setForm('')
       });
-  }, [setState]);
+  }, [setState, api_url]);
 
   const handleLogout = useCallback(() => {
     localStorage.removeItem('token');
@@ -65,7 +65,7 @@ const NavBar = () => {
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
-      fetch('http://localhost:8000/current-user/', {
+      fetch(`${ api_url }/current-user/`, {
         headers: {
           Authorization: `JWT ${localStorage.getItem('token')}`
         }
@@ -88,7 +88,7 @@ const NavBar = () => {
         })
         .catch(err => console.log("THIS IS THE ERROR", err));
     }
-  }, [setState, catchError])
+  }, [setState, catchError, api_url])
 
   useEffect(() => {
     switch (formType) {

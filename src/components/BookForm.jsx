@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import axios from 'axios'
+import { LeftoverContext } from '../LeftoverContext';
 
 function BookForm({setBooks, books}) {
+
+    const { api_url } = useContext(LeftoverContext)
+
     const createBook=(e, books)=>{
         e.preventDefault()
         const formData = e.target
@@ -16,7 +20,7 @@ function BookForm({setBooks, books}) {
                 'Content-Type': 'application/json'
             }
         }
-        axios.post('http://localhost:8000/books/books/', newBook, config)
+        axios.post(`${ api_url }/books/books/`, newBook, config)
         .then(res => {
             const newbooks = [res.data].concat(books)
             setBooks(newbooks)

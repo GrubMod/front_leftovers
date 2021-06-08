@@ -10,10 +10,13 @@ const App = () => {
     loggedIn: localStorage.getItem('token') ? true : false,
     username: ''
     });
+  
+  const api_url = process.env.REACT_APP_API_URL;
+
 
 
   return (
-    <LeftoverContext.Provider value={{state, setState}}>
+    <LeftoverContext.Provider value={{state, setState, api_url}}>
       <NavBar />
       <Books />
     </LeftoverContext.Provider>

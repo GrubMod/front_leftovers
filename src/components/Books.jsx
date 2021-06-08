@@ -8,11 +8,11 @@ import { LeftoverContext } from '../LeftoverContext';
 function Books(props) {
 
     const [books, setBooks] = useState([])
-    const { state } = useContext(LeftoverContext)
+    const { state, api_url } = useContext(LeftoverContext)
 
     useEffect(() => {
         function getBook() {
-            axios.get('http://localhost:8000/books/books/')
+            axios.get(`${ api_url }/books/books/`)
             .then(res => {
                 setBooks(res.data)
                 console.log(res.data)
@@ -20,7 +20,7 @@ function Books(props) {
             .catch(console.error)
         }
         getBook()
-    }, [])
+    }, [api_url])
 
 
 
