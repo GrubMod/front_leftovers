@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import NavBar from './components/NavBar';
-import Books from './components/Books'
+import Body from './components/Body'
 import { LeftoverContext } from './LeftoverContext';
 import './App.css';
 
@@ -18,7 +18,7 @@ const App = () => {
   return (
     <LeftoverContext.Provider value={{state, setState, api_url}}>
       <NavBar />
-      <Books />
+      <Body />
     </LeftoverContext.Provider>
   );
 };
