@@ -26,16 +26,15 @@ function Tags({ leftover }) {
 
   const tags = leftover.tags.map((tagStr) => {
     return (
-      <dev className="tag">
-        {tagStr}
-        <button name={tagStr} onClick={deleteTag}>x</button>
-      </dev>
+      <button className="tag">
+        {tagStr} <button name={tagStr} onClick={deleteTag}>x</button>
+      </button>
     );
   });
 
   return (
     <div>
-      {tags}
+      {tags} <button>+</button>
     </div>
   )
 }

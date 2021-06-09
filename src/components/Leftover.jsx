@@ -3,6 +3,7 @@ import { LeftoverContext } from "../LeftoverContext";
 import axios from "axios";
 import Tags from "./Tags";
 
+// Modal component
 function DeleteModal({ setModal, deleteRequest }) {
   function deleteLeftover(deleteRequest) {
     axios
@@ -25,6 +26,7 @@ function DeleteModal({ setModal, deleteRequest }) {
   );
 }
 
+// Leftover component
 function Leftover({ leftover, setModal }) {
   const { api_url } = useContext(LeftoverContext);
   console.log(leftover);
