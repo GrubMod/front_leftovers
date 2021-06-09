@@ -9,23 +9,26 @@ function Leftovers(props) {
   const [leftovers, setLeftovers] = useState([])
   const { state, api_url } = useContext(LeftoverContext)
 
+  const [ modal, setModal ] = useState() 
+
+  function getLeftovers() {
+    axios.get(`${ api_url }/leftovers/`)
+    .then(res => {
+        setLeftovers(res.data)
+        console.log(res.data)
+    })
+    .catch(console.error)
+  }
   useEffect(() => {
-    function getLeftovers() {
-      axios.get(`${ api_url }/leftovers/`)
-      .then(res => {
-          setLeftovers(res.data)
-          console.log(res.data)
-      })
-      .catch(console.error)
-    }
     getLeftovers()
   }, [api_url])
 
   return (
     state.loggedIn && leftovers && 
     <div>
+      <div>{ modal ? modal : 'No modal yet' }</div>
       {
-        leftovers.map((leftover, i) => <Leftover key={i} leftover={leftover} />)
+        leftovers.map((leftover, i) => <Leftover key={i} leftover={leftover} setModal={setModal}/>)
       }
     </div>
   );
