@@ -6,9 +6,10 @@ function Tags({ leftover }) {
   const { api_url } = useContext(LeftoverContext)
 
   function deleteTag(e) {
-    e.preventDefault();
+    e.stopPropagation()
+    e.preventDefault()
     const newTags = leftover.tags.filter((item) => item !== e.target.name)
-    const url = `${api_url}/leftovers/${leftover.id}`;
+    const url = `${api_url}/leftovers/${leftover.id}`
     const config = {
       headers: {
         Authorization: `JWT ${localStorage.getItem("token")}`,
@@ -24,18 +25,18 @@ function Tags({ leftover }) {
       .catch((error) => console.error);
   }
 
-  const tags = leftover.tags.map((tagStr) => {
+  const tags = leftover.tags.map((tagStr, i) => {
     return (
-      <button className="tag">
+      <li className="tag" key={i}>
         {tagStr} <button name={tagStr} onClick={deleteTag}>x</button>
-      </button>
+      </li>
     );
   });
 
   return (
-    <div>
+    <ul style={{borderBlock: "solid"}}>
       {tags} <button>+</button>
-    </div>
+    </ul>
   )
 }
 
