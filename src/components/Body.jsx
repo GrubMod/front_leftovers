@@ -1,6 +1,12 @@
 import React, { useContext } from 'react';
 import { LeftoverContext } from '../LeftoverContext';
 import Leftovers from './Leftovers';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 import TensorFlow from './tensorflow/TensorFlow'
 
 
@@ -10,9 +16,11 @@ function Body(props) {
   return (
     state.loggedIn &&
     <div>
-      {/* <TensorFlow /> */}
-      <Leftovers />
+        <Route exact path="/add" component={TensorFlow} />
+        <Route exact path="/" component={Leftovers} />
     </div>
+    
+
   );
 }
 
