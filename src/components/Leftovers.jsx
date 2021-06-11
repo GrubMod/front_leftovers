@@ -2,7 +2,8 @@ import React, {useEffect, useState, useContext}  from 'react';
 import axios from 'axios';
 import { LeftoverContext } from '../LeftoverContext';
 import Leftover from './Leftover'
-import NewLeftoverForm from './NewLeftoverForm';
+import LeftoverForm from './LeftoverForm';
+import FoodImageForm from './leftovers/FoodImageForm';
 
 
 function Leftovers(props) {
@@ -31,7 +32,8 @@ function Leftovers(props) {
       {
         leftovers.map((leftover, i) => <Leftover key={i} leftover={leftover} setModal={setModal}/>)
       }
-      <NewLeftoverForm leftovers={leftovers} setLeftovers={leftovers}/>
+      <LeftoverForm leftovers={leftovers} setLeftovers={leftovers}/>
+      <FoodImageForm />
     </div>
   );
 }

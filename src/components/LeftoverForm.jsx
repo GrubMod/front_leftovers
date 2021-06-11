@@ -1,14 +1,14 @@
 import React, { useContext } from 'react';
 import axios from 'axios';
 import { LeftoverContext } from '../LeftoverContext';
-import NewTagForm from './NewTagForm';
+import TagForm from './TagForm';
 
 
-function NewLeftoverForm({ leftovers, setLeftovers }) {
+function LeftoverForm({ leftovers, setLeftovers }) {
 
   const { api_url } = useContext(LeftoverContext)
 
-  function createLeftover(e, leftovers) {
+  function createLeftover(e) {
     e.preventDefault()
     const url = `${ api_url }/leftovers/`
     const formData = e.target
@@ -39,7 +39,7 @@ function NewLeftoverForm({ leftovers, setLeftovers }) {
   }
   return (
     <div>
-      <form onSubmit={e => createLeftover(e, leftovers)}>
+      <form onSubmit={createLeftover}>
         <label>Name </label>
         <input name='name' type='text'/>
         <label>Expiration </label>
@@ -52,9 +52,9 @@ function NewLeftoverForm({ leftovers, setLeftovers }) {
         <label>Make Public? </label>
         <button type='submit'>Post</button>
       </form>
-        
-        <NewTagForm />
+      
+      <TagForm />
     </div>
   );
 }
-export default NewLeftoverForm;
+export default LeftoverForm;

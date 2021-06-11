@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function NewTagForm(props) {
+function TagForm(props) {
   const [tagsToAdd, setTagsToAdd] = useState([])
 
   function addTag(e){
@@ -42,4 +42,4 @@ function NewTagForm(props) {
   );
 }
 
-export default NewTagForm;
+export default TagForm;

@@ -25,6 +25,7 @@ function DeleteModal({ setModal, deleteRequest }) {
     </div>
   );
 }
+// Mdoal component ends
 
 // Leftover component
 function Leftover({ leftover, setModal }) {
@@ -44,7 +45,7 @@ function Leftover({ leftover, setModal }) {
 
   return (
     <div>
-      <img src={leftover.image} alt="" />
+      <img src={leftover.image.image} width='200' height='200' alt={leftover.id} />
       <h3>{leftover.name}</h3>
       <p>@{leftover.owner}</p>
       <p>{leftover.description}</p>
