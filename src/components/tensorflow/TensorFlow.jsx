@@ -2,6 +2,7 @@ import { render } from '@testing-library/react';
 import React, { useRef, useEffect, useState } from 'react';
 import SelectButton from './SelectButton' 
 
+const local_address = process.env.REACT_APP_LOCAL_ADDRESS;
 // console.log("THIS IS MY CSV")
 // const reader = new FileReader();
 // console.log(reader.readAsText(csv))
@@ -9,7 +10,7 @@ import SelectButton from './SelectButton'
 const tf = require('@tensorflow/tfjs');
 // const tf_node = require('@tensorflow/tfjs-node');
 
-const path = 'http://localhost:3000/models/model.json';
+const path = `${local_address}/models/model.json`;
 
 // async function getModel() { return await tf.loadGraphModel(path + '/model.json')}
 
@@ -41,7 +42,7 @@ const TensorFlow = () => {
     useEffect(() => {
         async function runSetup() {
             const csvFile = await csvReader(
-                'http://localhost:3000/models/labels.csv'
+                `${local_address}/models/labels.csv`
             );
 
             setLabels(
@@ -99,9 +100,6 @@ const TensorFlow = () => {
     return (
         <div>
             <h1>{vid.current ? vid.current.innerText : 'Not Loaded'}</h1>
-            <button onClick={() => console.log(vid.current)}>
-                REF CONSOLE LOG
-            </button>
             <button onClick={() => runPrediction()}>RUN TFLOW</button>
             <video
                 ref={vid}

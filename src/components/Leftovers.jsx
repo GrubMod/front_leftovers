@@ -11,8 +11,6 @@ function Leftovers(props) {
   const [leftovers, setLeftovers] = useState([])
   const { state, api_url } = useContext(LeftoverContext)
 
-  const [ modal, setModal ] = useState() 
-
   function getLeftovers() {
     axios.get(`${ api_url }/leftovers/`)
     .then(res => {
@@ -28,9 +26,8 @@ function Leftovers(props) {
   return (
     state.loggedIn && leftovers && 
     <div>
-      <div>{ modal ? modal : 'No modal yet' }</div>
       {
-        leftovers.map((leftover, i) => <Leftover key={i} leftover={leftover} setModal={setModal}/>)
+        leftovers.map((leftover, i) => <Leftover key={i} leftover={leftover}/>)
       }
       <LeftoverForm leftovers={leftovers} setLeftovers={leftovers}/>
       <FoodImageForm />
