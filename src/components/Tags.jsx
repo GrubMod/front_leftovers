@@ -1,9 +1,17 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
 import { LeftoverContext } from "../LeftoverContext";
+import { useEffect } from "react";
 
 function Tags({ leftover }) {
-  const { api_url } = useContext(LeftoverContext)
+  const { state, api_url } = useContext(LeftoverContext)
+  const [ownerIsLoggedIn, setOwnerIsLoggedIn] = useState()
+
+  useEffect(() => {
+    if (state.username === leftover.owner) {
+      setOwnerIsLoggedIn(true)
+    }
+  }, [leftover, state])
 
   function deleteTag(e) {
     e.stopPropagation()
@@ -35,7 +43,8 @@ function Tags({ leftover }) {
 
   return (
     <ul style={{borderBlock: "solid"}}>
-      {tags} <button>+</button>
+      {tags} 
+      {ownerIsLoggedIn ? <button>+</button> : ""}
     </ul>
   )
 }

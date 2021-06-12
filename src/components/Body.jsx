@@ -1,12 +1,8 @@
 import React, { useContext } from 'react';
+import { Route } from "react-router-dom";
 import { LeftoverContext } from '../LeftoverContext';
 import Leftovers from './Leftovers';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
+import LeftoverDetail from './LeftoverDetail';
 import TensorFlow from './tensorflow/TensorFlow'
 
 
@@ -18,6 +14,8 @@ function Body(props) {
     <div>
         <Route exact path="/add" component={TensorFlow} />
         <Route exact path="/" component={Leftovers} />
+        <Route exact path="/leftovers/:id" 
+          render={(routerProps) => <LeftoverDetail match={routerProps.match}/>}/>
     </div>
     
 

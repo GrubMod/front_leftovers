@@ -58,13 +58,13 @@ function ClaimModal({ setModal, leftover }) {
 
   function ClaimLeftover(claimRequest) {
     // axios post request to orders
-    axios
-      .post(claimRequest.url, claimRequest.reqBody, claimRequest.config)
-      .then((res) => {
-        console.log(res);
-      })
-      .then(setModal())
-      .catch((error) => console.error);
+    // axios
+    //   .post(claimRequest.url, claimRequest.reqBody, claimRequest.config)
+    //   .then((res) => {
+    //     console.log(res);
+    //   })
+    //   .then(setModal())
+    //   .catch((error) => console.error);
   }
   return (
     <div>
