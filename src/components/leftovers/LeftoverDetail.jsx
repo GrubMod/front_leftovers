@@ -5,6 +5,7 @@ import axios from "axios";
 import Tags from "./Tags";
 import DeleteModal from './DeleteModal'
 import ClaimModal from './ClaimModal'
+import Expiration from './Expiration'
 
 
 /* ==============================================
@@ -117,6 +118,7 @@ function LeftoverDetail(props) {
           <h3>{leftover.name}</h3>
           <p>@{leftover.owner}</p>
           <p>{leftover.description}</p>
+          <Expiration leftover={leftover}/>
           <Tags
             leftover={leftover}
             editMode={editMode}
