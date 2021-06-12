@@ -1,84 +1,49 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Redirect } from "react-router";
 import { LeftoverContext } from "../../LeftoverContext";
-import Tags from "./Tags";
 import axios from "axios";
+import Tags from "./Tags";
+import DeleteModal from './DeleteModal'
+import ClaimModal from './ClaimModal'
 
-/* ==============================================
-            Delete Modal Component
-=============================================== */
-function DeleteModal({ setModal, leftover }) {
-  const { api_url } = useContext(LeftoverContext);
-  const [deleted, setDeleted] = useState(false)
-  const deleteRequest = {
-    url: `${api_url}/leftovers/${leftover.id}`,
-    config: {
-      headers: {
-        Authorization: `JWT ${localStorage.getItem("token")}`,
-        "Content-Type": "application/json",
-      },
-    },
-    reqBody: { is_available: "false" },
-  };
-  function deleteLeftover(deleteRequest) {
-    axios
-      .patch(deleteRequest.url, deleteRequest.reqBody, deleteRequest.config)
-      .then(res => {
-        setDeleted(true)
-        setModal()
-      })
-      .catch((error) => console.error);
-  }
-  return (
-    <div>
-      {deleted ? <Redirect to="/" /> : ""}
-      <h2>Are you sure you want to delete this leftover</h2>
-      <button onClick={() => deleteLeftover(deleteRequest)}>
-        Confirm Delete
-      </button>
-      <button onClick={() => setModal()}>Cancel</button>
-    </div>
-  );
-}
-/* ------------------- Ends ------------------- */
 
 /* ==============================================
             Claim Modal Component
 =============================================== */
-function ClaimModal({ setModal, leftover }) {
-  const { api_url } = useContext(LeftoverContext);
+// function ClaimModal({ setModal, leftover }) {
+//   const { api_url } = useContext(LeftoverContext);
 
-  const claimRequest = {
-    url: `${api_url}/orders`,
-    config: {
-      headers: {
-        Authorization: `JWT ${localStorage.getItem("token")}`,
-        "Content-Type": "application/json",
-      },
-    },
-    reqBody: { is_available: "false" },
-  };
+//   const claimRequest = {
+//     url: `${api_url}/orders`,
+//     config: {
+//       headers: {
+//         Authorization: `JWT ${localStorage.getItem("token")}`,
+//         "Content-Type": "application/json",
+//       },
+//     },
+//     reqBody: { is_available: "false" },
+//   };
 
-  function ClaimLeftover(claimRequest) {
-    // axios post request to orders
-    // axios
-    //   .post(claimRequest.url, claimRequest.reqBody, claimRequest.config)
-    //   .then((res) => {
-    //     console.log(res);
-    //   })
-    //   .then(setModal())
-    //   .catch((error) => console.error);
-  }
-  return (
-    <div>
-      <h2>Lets Claim this leftover</h2>
-      <button onClick={() => ClaimLeftover(claimRequest)}>
-        Claim Leftover
-      </button>
-      <button onClick={() => setModal("")}>Cancel</button>
-    </div>
-  );
-}
+//   function ClaimLeftover(claimRequest) {
+//     // axios post request to orders
+//     // axios
+//     //   .post(claimRequest.url, claimRequest.reqBody, claimRequest.config)
+//     //   .then((res) => {
+//     //     console.log(res);
+//     //   })
+//     //   .then(setModal())
+//     //   .catch((error) => console.error);
+//   }
+//   return (
+//     <div>
+//       <h2>Lets Claim this leftover</h2>
+//       <button onClick={() => ClaimLeftover(claimRequest)}>
+//         Claim Leftover
+//       </button>
+//       <button onClick={() => setModal("")}>Cancel</button>
+//     </div>
+//   );
+// }
 /* ------------------- Ends ------------------- */
 
 /* ==============================================
@@ -89,7 +54,7 @@ function LeftoverDetail(props) {
   const [leftover, setLeftover] = useState();
   const [ownerIsLoggedIn, setOwnerIsLoggedIn] = useState();
   const [editMode, setEditMode] = useState(false);
-  const [editComplete, setEditComplete] = useState(false)
+  const [editComplete, setEditComplete] = useState(false);
   const [tagsToAdd, setTagsToAdd] = useState();
   const { state, api_url } = useContext(LeftoverContext);
 
@@ -132,17 +97,19 @@ function LeftoverDetail(props) {
       },
     };
     axios
-    .patch(updateRequest.url, updateRequest.body, updateRequest.config)
-    .then(res => 
-      setEditComplete(true)
-    )
-    .catch();
+      .patch(updateRequest.url, updateRequest.body, updateRequest.config)
+      .then((res) => setEditComplete(true))
+      .catch();
     setEditMode(false);
   }
 
   return (
     <div>
-      {editComplete ? <Redirect to={`/leftovers/${props.match.params.id}`} /> : ""}
+      {editComplete ? (
+        <Redirect to={`/leftovers/${props.match.params.id}`} />
+      ) : (
+        ""
+      )}
       <div>{modal ? modal : ""}</div>
       {leftover ? (
         <div>
@@ -166,8 +133,16 @@ function LeftoverDetail(props) {
       {ownerIsLoggedIn ? (
         editMode ? (
           <>
-          <button onClick={() => setModal(<DeleteModal setModal={setModal} leftover={leftover} />)}>Delete</button>
-          <button onClick={updateLeftover}>Done</button>
+            <button
+              onClick={() =>
+                setModal(
+                  <DeleteModal setModal={setModal} leftover={leftover} />
+                )
+              }
+            >
+              Delete
+            </button>
+            <button onClick={updateLeftover}>Done</button>
           </>
         ) : (
           <button onClick={() => setEditMode(true)}>Edit</button>
@@ -176,7 +151,7 @@ function LeftoverDetail(props) {
         <button
           onClick={() =>
             setModal(
-              <ClaimModal setModal={setModal} claimRequest={"some function"} />
+              <ClaimModal setModal={setModal} leftover={leftover} />
             )
           }
         >
@@ -188,5 +163,3 @@ function LeftoverDetail(props) {
 }
 
 export default LeftoverDetail;
-
-// <button onClick={() => setModal(<DeleteModal setModal={setModal} leftover={leftover} />)}>X</button>

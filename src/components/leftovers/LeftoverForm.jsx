@@ -51,7 +51,7 @@ function LeftoverForm({ foodImage }) {
         <button type="submit">Post</button>
       </form>
 
-      <TagForm tagsToAdd={tagsToAdd} setTagsToAdd={setTagsToAdd}/>
+      <TagForm tagsToAdd={tagsToAdd} setTagsToAdd={setTagsToAdd} />
     </div>
   );
 }
