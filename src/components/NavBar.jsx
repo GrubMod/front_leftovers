@@ -114,7 +114,7 @@ const NavBar = () => {
 
   return (
     <div>
-      <h1>Leftovers</h1>
+      <Link to="/"><h1>Leftovers</h1></Link>
       {state.username ? <h2>{`Hi ${state.username}!`}</h2> : ""}
       <AuthButtons setFormType={setFormType} handleLogout={handleLogout} />
       {form}

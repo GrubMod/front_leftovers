@@ -30,7 +30,7 @@ function TagForm({tagsToAdd, setTagsToAdd}) {
   return (
     <div>
       <form onSubmit={addTag}>
-        <label>Tags </label>
+        <label>Enter Tag: </label>
         <input name='tag' type="text"></input>
         <button type="submit">add tag</button>
       </form>

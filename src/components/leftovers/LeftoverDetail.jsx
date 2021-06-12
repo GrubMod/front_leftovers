@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
+import { Redirect } from "react-router";
 import { LeftoverContext } from "../../LeftoverContext";
 import Tags from "./Tags";
 import axios from "axios";
@@ -8,6 +9,7 @@ import axios from "axios";
 =============================================== */
 function DeleteModal({ setModal, leftover }) {
   const { api_url } = useContext(LeftoverContext);
+  const [deleted, setDeleted] = useState(false)
   const deleteRequest = {
     url: `${api_url}/leftovers/${leftover.id}`,
     config: {
@@ -21,14 +23,15 @@ function DeleteModal({ setModal, leftover }) {
   function deleteLeftover(deleteRequest) {
     axios
       .patch(deleteRequest.url, deleteRequest.reqBody, deleteRequest.config)
-      .then((res) => {
-        console.log(res);
+      .then(res => {
+        setDeleted(true)
+        setModal()
       })
-      .then(setModal())
       .catch((error) => console.error);
   }
   return (
     <div>
+      {deleted ? <Redirect to="/" /> : ""}
       <h2>Are you sure you want to delete this leftover</h2>
       <button onClick={() => deleteLeftover(deleteRequest)}>
         Confirm Delete
@@ -76,16 +79,21 @@ function ClaimModal({ setModal, leftover }) {
     </div>
   );
 }
-
 /* ------------------- Ends ------------------- */
 
+/* ==============================================
+          Leftover Detail Component
+=============================================== */
 function LeftoverDetail(props) {
   const [modal, setModal] = useState();
   const [leftover, setLeftover] = useState();
+  const [ownerIsLoggedIn, setOwnerIsLoggedIn] = useState();
+  const [editMode, setEditMode] = useState(false);
+  const [editComplete, setEditComplete] = useState(false)
+  const [tagsToAdd, setTagsToAdd] = useState();
   const { state, api_url } = useContext(LeftoverContext);
 
-  console.log(props.match.params.id);
-
+  // Fetches leftover detail
   useEffect(() => {
     axios
       .get(`${api_url}/leftovers/${props.match.params.id}`)
@@ -93,15 +101,48 @@ function LeftoverDetail(props) {
         setLeftover(res.data);
       })
       .catch(console.error);
-  }, [api_url]);
+  }, [api_url, props]);
 
-  function consoleFunc() {
-    console.log("after click: should display leftover image url");
-    console.log(leftover.image.image);
+  // Checks if the leftover owner is the logged in user
+  useEffect(() => {
+    if (leftover && state.username === leftover.owner) {
+      setOwnerIsLoggedIn(true);
+      console.log("owner is logged in");
+      setTagsToAdd([...leftover.tags]);
+    }
+  }, [leftover, state]);
+
+  // Updates the leftover with the edits
+  function updateLeftover(e) {
+    e.preventDefault();
+    const updateRequest = {
+      url: `${api_url}/leftovers/${leftover.id}`,
+      config: {
+        headers: {
+          Authorization: `JWT ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+        },
+      },
+      body: {
+        // expiration: `${formData.expiration.value}:00Z`,
+        // description: formData.description.value,
+        tags: tagsToAdd,
+        // is_public: formData.is_public.value,
+        // is_available: formData.is_public.value,
+      },
+    };
+    axios
+    .patch(updateRequest.url, updateRequest.body, updateRequest.config)
+    .then(res => 
+      setEditComplete(true)
+    )
+    .catch();
+    setEditMode(false);
   }
 
   return (
     <div>
+      {editComplete ? <Redirect to={`/leftovers/${props.match.params.id}`} /> : ""}
       <div>{modal ? modal : ""}</div>
       {leftover ? (
         <div>
@@ -109,7 +150,12 @@ function LeftoverDetail(props) {
           <h3>{leftover.name}</h3>
           <p>@{leftover.owner}</p>
           <p>{leftover.description}</p>
-          <Tags leftover={leftover} />
+          <Tags
+            leftover={leftover}
+            editMode={editMode}
+            tagsToAdd={tagsToAdd}
+            setTagsToAdd={setTagsToAdd}
+          />
           <p>
             available: <i>{leftover.is_available.toString()}</i>
           </p>
@@ -117,26 +163,30 @@ function LeftoverDetail(props) {
       ) : (
         "No Leftover Detail"
       )}
-      {true ? (
+      {ownerIsLoggedIn ? (
+        editMode ? (
+          <>
+          <button onClick={() => setModal(<DeleteModal setModal={setModal} leftover={leftover} />)}>Delete</button>
+          <button onClick={updateLeftover}>Done</button>
+          </>
+        ) : (
+          <button onClick={() => setEditMode(true)}>Edit</button>
+        )
+      ) : (
         <button
           onClick={() =>
-            setModal(<ClaimModal setModal={setModal} claimRequest={2} />)
+            setModal(
+              <ClaimModal setModal={setModal} claimRequest={"some function"} />
+            )
           }
         >
           Claim
         </button>
-      ) : (
-        <button
-          onClick={() =>
-            setModal(<DeleteModal setModal={setModal} leftover={leftover} />)
-          }
-        >
-          X
-        </button>
       )}
-      <button onClick={consoleFunc}>console.log</button>
     </div>
   );
 }
 
 export default LeftoverDetail;
+
+// <button onClick={() => setModal(<DeleteModal setModal={setModal} leftover={leftover} />)}>X</button>
