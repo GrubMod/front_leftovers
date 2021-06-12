@@ -1,50 +1,64 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 
 function Expiration({ leftover }) {
   const expiration = new Date(leftover.expiration);
-  const [timeLeftObj, setTimeLeftObj] = useState()
+  const timerObj = {
+    days: null,
+    hours: null,
+    minutes: null,
+    seconds: null,
+    expired: false,
+  };
+  const [timeLeftObj, setTimeLeftObj] = useState(timerObj);
 
-  function timerFunction() {
-    const now = new Date().getTime();
-    const timeLeft = expiration - now;
+  // timerFunction()
 
-    const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-    const hours = Math.floor(
-      (timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-    );
-    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+  useEffect(() => {
+    function timerFunction() {
+      const now = new Date().getTime();
+      const timeLeft = expiration - now;
 
-    if (timeLeft > 0) {
-      setTimeLeftObj({
+      const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+      const hours = Math.floor(
+        (timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
+      const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+      console.log(timeLeftObj);
+
+      if (timeLeft > 0) {
+        setTimeLeftObj({
           days: days,
           hours: hours,
           minutes: minutes,
           seconds: seconds,
           expired: false,
-      })
-    } else {
-      setTimeLeftObj({ expired: true })
+        });
+      } else {
+        setTimeLeftObj({ ...timerObj, expired: true });
+      }
     }
-  }
+    timerFunction();
+  }, []);
 
-  setInterval(timerFunction, 1000);
+  // setInterval(timerFunction, 5000);
 
   return (
     <div>
-    {timeLeftObj &&
-      (timeLeftObj.expired ? (
+      {timeLeftObj.expired ? (
         <p>Expired Message</p>
       ) : (
         <>
-
-          <p>{timeLeftObj.days} d</p>
-          <p>{timeLeftObj.hours} h</p>
+          {timeLeftObj.days ? <p>{timeLeftObj.days} d</p> : ""}
+          {timeLeftObj.hours ? <p>{timeLeftObj.hours} h</p> : ""}
+          {timeLeftObj.minutes ? <p>{timeLeftObj.minutes} m</p> : ""}
+          {/* <p>{timeLeftObj.hours} h</p>
           <p>{timeLeftObj.minutes} m</p>
-          <p>{timeLeftObj.seconds} s</p>
+          <p>{timeLeftObj.seconds} s</p> */}
         </>
-      ))
-    }
+      )}
     </div>
   );
 }
