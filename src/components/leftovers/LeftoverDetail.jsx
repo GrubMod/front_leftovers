@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { LeftoverContext } from "../LeftoverContext";
+import { LeftoverContext } from "../../LeftoverContext";
 import Tags from "./Tags";
 import axios from "axios";
 
@@ -105,12 +105,7 @@ function LeftoverDetail(props) {
       <div>{modal ? modal : ""}</div>
       {leftover ? (
         <div>
-          <img
-            src={leftover.image.image}
-            width="200"
-            height="200"
-            alt={leftover.id}
-          />
+          <img src={leftover.image.image} width="200" alt={leftover.id} />
           <h3>{leftover.name}</h3>
           <p>@{leftover.owner}</p>
           <p>{leftover.description}</p>

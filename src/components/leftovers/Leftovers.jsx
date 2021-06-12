@@ -1,9 +1,9 @@
 import React, {useEffect, useState, useContext}  from 'react';
 import axios from 'axios';
-import { LeftoverContext } from '../LeftoverContext';
-import Leftover from './Leftover'
+import { LeftoverContext } from '../../LeftoverContext';
+import Leftover from './Leftover';
 import LeftoverForm from './LeftoverForm';
-import FoodImageForm from './leftovers/FoodImageForm';
+import FoodImageForm from './FoodImageForm';
 
 
 function Leftovers(props) {

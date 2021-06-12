@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
-function TagForm(props) {
-  const [tagsToAdd, setTagsToAdd] = useState([])
+function TagForm({tagsToAdd, setTagsToAdd}) {
 
   function addTag(e){
     e.preventDefault()
@@ -18,13 +17,13 @@ function TagForm(props) {
     setTagsToAdd(newTags)
   }
 
-  // Need to add axios lookup of all tags available and input them into the drop down menu of the input
+  // TODO: Need to add axios lookup of all tags available and input them into the drop down menu of the input
 
   const tagList = tagsToAdd.map((tagStr) => {
     return (
-      <button className="tag">
+      <li className="tag">
         {tagStr} <button name={tagStr} onClick={removeTag}>x</button>
-      </button>
+      </li>
     )
   })
 
