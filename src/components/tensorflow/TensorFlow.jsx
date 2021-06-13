@@ -109,6 +109,7 @@ const TensorFlow = () => {
                 id="webcam"
                 width="192"
                 height="192"
+                facingMode={{exact: "environment"}}
             >
                 Some video
             </video>
