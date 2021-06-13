@@ -8,10 +8,12 @@ function Leftovers() {
   const { state, api_url } = useContext(LeftoverContext);
   const [myFridgeIsClicked, setMyFridgeIsClicked] = useState(false);
 
+  
+
   function getLeftovers() {
-    const offset =
-      new Date("1969-07-20T20:17:40.00Z").getTimezoneOffset() * 1000 * 60;
-    console.log("local time offset:", offset / 1000 / 60 / 60, "hours");
+    // const offset =
+    //   new Date("1969-07-20T20:17:40.00Z").getTimezoneOffset() * 1000 * 60;
+    // console.log("local time offset:", offset / 1000 / 60 / 60, "hours");
     axios
       .get(`${api_url}/leftovers/`)
       .then((res) => {
