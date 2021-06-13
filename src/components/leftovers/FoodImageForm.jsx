@@ -7,6 +7,9 @@ function FoodImageForm({ foodImage, setFoodImage }) {
   const fileInput = useRef();
   const [formDataState, setFormDataState] = useState({ title: "" });
 
+  // if foodImage, run uploadFoodImage with said image data 
+  // the data would be passed from the image predictor
+
   const handleChange = (e) => {
     setFormDataState({
       [e.target.id]: e.target.value,

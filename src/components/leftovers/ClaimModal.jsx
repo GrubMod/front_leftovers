@@ -1,29 +1,33 @@
 import React, { useContext } from "react";
 import { LeftoverContext } from "../../LeftoverContext";
+import axios from "axios";
 
 function ClaimModal({ setModal, leftover }) {
   const { api_url } = useContext(LeftoverContext);
 
   const claimRequest = {
-    url: `${api_url}/orders`,
+    url: `${api_url}/orders/`,
     config: {
       headers: {
         Authorization: `JWT ${localStorage.getItem("token")}`,
         "Content-Type": "application/json",
       },
     },
-    reqBody: { is_available: "false" },
+    reqBody: {
+      leftover: leftover.id,
+      is_available: "false" 
+    },
   };
 
   function ClaimLeftover(claimRequest) {
     // axios post request to orders
-    // axios
-    //   .post(claimRequest.url, claimRequest.reqBody, claimRequest.config)
-    //   .then((res) => {
-    //     console.log(res);
-    //   })
-    //   .then(setModal())
-    //   .catch((error) => console.error);
+    axios
+      .post(claimRequest.url, claimRequest.reqBody, claimRequest.config)
+      .then((res) => {
+        console.log(res);
+      })
+      .then(setModal())
+      .catch((error) => console.error);
   }
   return (
     <div>

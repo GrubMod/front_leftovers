@@ -9,6 +9,7 @@ function Leftover({ leftover }) {
       <img src={leftover.image.image} width="200" alt={leftover.id} />
       <h3>{leftover.name}</h3>
       <p>@{leftover.owner}</p>
+      <p>expiration date: @{leftover.expiration}</p>
       <Expiration leftover={leftover}/>
       <Tags leftover={leftover} />
       <br />
