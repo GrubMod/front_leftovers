@@ -93,7 +93,14 @@ const NavBar = () => {
         })
         .then((json) => {
           console.log("Im inside the json", json);
-          setState({ loggedIn: true, username: json.username });
+          setState({
+            loggedIn: true,
+            username: json.username,
+            userId: json.id,
+            name:
+              json.first_name.charAt(0).toUpperCase() +
+              json.first_name.slice(1).toLowerCase(),
+          });
         })
         .catch((err) => console.log("THIS IS THE ERROR", err));
     }
@@ -114,8 +121,10 @@ const NavBar = () => {
 
   return (
     <div>
-      <Link to="/"><h1>Leftovers</h1></Link>
-      {state.username ? <h2>{`Hi ${state.username}!`}</h2> : ""}
+      <Link to="/">
+        <h1>Leftover Logo</h1>
+      </Link>
+      {state.username ? <h2>{`Hi ${state.username}`}</h2> : ""}
       <AuthButtons setFormType={setFormType} handleLogout={handleLogout} />
       {form}
       {state.loggedIn ? (
