@@ -12,6 +12,7 @@ function FoodImageForm({ foodImage, setFoodImage }) {
     // the data would be passed from the image predictor
 
     const handleChange = e => {
+        console.log(e.target)
         setFormDataState({
             [e.target.id]: e.target.value,
         });
