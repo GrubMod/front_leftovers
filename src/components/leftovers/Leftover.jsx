@@ -15,10 +15,7 @@ function Leftover({ leftover }) {
                         <span className="date">@{leftover.owner}</span>
                     </Card.Meta>
                     <Card.Description>
-                        Matthew is a musician living in Nashville.
-                        <caption>
-                            expiration date: @{leftover.expiration}
-                        </caption>
+                        {leftover.description}
                     </Card.Description>
                 </Card.Content>
                 <Card.Content>

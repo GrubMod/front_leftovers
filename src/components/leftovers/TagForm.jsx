@@ -1,4 +1,5 @@
 import React from "react";
+import { List, Label, Icon, Button } from "semantic-ui-react";
 
 function TagForm({ tagsToAdd, setTagsToAdd }) {
   function addTag(e) {
@@ -20,12 +21,16 @@ function TagForm({ tagsToAdd, setTagsToAdd }) {
 
   const tagList = tagsToAdd.map((tagStr) => {
     return (
-      <li className="tag">
-        {tagStr}{" "}
-        <button name={tagStr} onClick={removeTag}>
-          x
-        </button>
-      </li>
+      <List.Item>
+        <Button as="div" labelPosition="left" name={tagStr} onClick={removeTag}>
+          <Label as="a" basic>
+            {tagStr}
+          </Label>
+          <Button icon>
+            <Icon name="fork" />
+          </Button>
+        </Button>
+      </List.Item>
     );
   });
 
@@ -36,7 +41,7 @@ function TagForm({ tagsToAdd, setTagsToAdd }) {
         <input name="tag" type="text"></input>
         <button type="submit">add tag</button>
       </form>
-      <ul>{tagList}</ul>
+      <List>{tagList}</List>
     </div>
   );
 }

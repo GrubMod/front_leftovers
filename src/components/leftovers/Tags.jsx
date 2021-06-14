@@ -1,23 +1,24 @@
 import React from "react";
 import TagForm from "./TagForm";
+import { List, Label } from 'semantic-ui-react'
 
 function Tags({ leftover, editMode, tagsToAdd, setTagsToAdd }) {
   const tags = leftover.tags.map((tagStr, i) => {
     return (
-      <li className="tag" key={i}>
-        {tagStr}
-      </li>
+      <List.Item key={i}>
+        <Label>{tagStr}</Label>
+      </List.Item>
     );
   });
 
   return (
-    <ul style={{ borderBlock: "solid" }}>
+    <List horizontal>
       {editMode ? (
         <TagForm tagsToAdd={tagsToAdd} setTagsToAdd={setTagsToAdd} />
       ) : (
         tags
       )}
-    </ul>
+    </List>
   );
 }
 
