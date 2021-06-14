@@ -3,47 +3,35 @@ import { useEffect } from "react";
 
 function Expiration({ leftover }) {
   const expiration = new Date(leftover.expiration);
-  const timerObj = {
-    days: null,
-    hours: null,
-    minutes: null,
-    seconds: null,
-    expired: false,
-  };
-  const [timeLeftObj, setTimeLeftObj] = useState(timerObj);
-
-  // timerFunction()
+  const [timeLeftObj, setTimeLeftObj] = useState(calculateTimeLeft());
 
   useEffect(() => {
-    function timerFunction() {
-      const now = new Date().getTime();
-      const timeLeft = expiration - now;
-
-      const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-      const hours = Math.floor(
-        (timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-      );
-      const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-
-      console.log(timeLeftObj);
-
-      if (timeLeft > 0) {
-        setTimeLeftObj({
-          days: days,
-          hours: hours,
-          minutes: minutes,
-          seconds: seconds,
-          expired: false,
-        });
-      } else {
-        setTimeLeftObj({ ...timerObj, expired: true });
-      }
-    }
-    timerFunction();
+    setTimeLeftObj(calculateTimeLeft());
   }, []);
 
-  // setInterval(timerFunction, 5000);
+  function calculateTimeLeft() {
+    const now = new Date().getTime();
+    const difference = expiration - now;
+    let timeLeft = {};
+
+    if (difference > 0) {
+      timeLeft = {
+        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+        hours: Math.floor(
+          (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        ),
+        minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
+        seconds: Math.floor((difference % (1000 * 60)) / 1000),
+        expired: false,
+      };
+    } else {
+      timeLeft = {
+        expired: true,
+      };
+    }
+
+    return timeLeft;
+  }
 
   return (
     <div>
@@ -51,12 +39,15 @@ function Expiration({ leftover }) {
         <p>Expired Message</p>
       ) : (
         <>
-          {timeLeftObj.days ? <p>{timeLeftObj.days} d</p> : ""}
-          {timeLeftObj.hours ? <p>{timeLeftObj.hours} h</p> : ""}
-          {timeLeftObj.minutes ? <p>{timeLeftObj.minutes} m</p> : ""}
-          {/* <p>{timeLeftObj.hours} h</p>
-          <p>{timeLeftObj.minutes} m</p>
-          <p>{timeLeftObj.seconds} s</p> */}
+          {timeLeftObj.days ? (
+            <p>{timeLeftObj.days} days left</p>
+          ) : timeLeftObj.hours ? (
+            <p>{timeLeftObj.hours} hours</p>
+          ) : timeLeftObj.minutes ? (
+            <p>{timeLeftObj.minutes} minutes left</p>
+          ) : (
+            ""
+          )}
         </>
       )}
     </div>
