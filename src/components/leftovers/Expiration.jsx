@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
+import { Label, Icon } from 'semantic-ui-react'
 
 function Expiration({ leftover }) {
   const expiration = new Date(leftover.expiration);
@@ -36,15 +37,15 @@ function Expiration({ leftover }) {
   return (
     <div>
       {timeLeftObj.expired ? (
-        <p>Expired Message</p>
+        <Label as='a' color='red' ribbon>Expired Message</Label>
       ) : (
         <>
           {timeLeftObj.days ? (
-            <p>{timeLeftObj.days} days left</p>
+            <Label as='a' color='blue' ribbon><Icon name='clock outline'/>{timeLeftObj.days} days left</Label>
           ) : timeLeftObj.hours ? (
-            <p>{timeLeftObj.hours} hours</p>
+            <Label as='a' color='orange' ribbon><Icon name='clock outline'/>{timeLeftObj.hours} hours</Label>
           ) : timeLeftObj.minutes ? (
-            <p>{timeLeftObj.minutes} minutes left</p>
+            <Label as='a' color='red' ribbon><Icon name='clock outline'/>{timeLeftObj.minutes} minutes left</Label>
           ) : (
             ""
           )}

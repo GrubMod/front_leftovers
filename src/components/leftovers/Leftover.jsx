@@ -14,9 +14,6 @@ function Leftover({ leftover }) {
                     <Card.Meta>
                         <span className="date">@{leftover.owner}</span>
                     </Card.Meta>
-                    <Card.Description>
-                        {leftover.description}
-                    </Card.Description>
                 </Card.Content>
                 <Card.Content>
                     <Expiration leftover={leftover} />

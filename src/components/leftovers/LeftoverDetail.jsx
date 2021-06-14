@@ -3,10 +3,17 @@ import { Redirect } from "react-router";
 import { LeftoverContext } from "../../LeftoverContext";
 import axios from "axios";
 import Tags from "./Tags";
-import DeleteModal from './DeleteModal'
-import ClaimModal from './ClaimModal'
-import Expiration from './Expiration'
-import { Button } from "semantic-ui-react";
+import DeleteModal from "./DeleteModal";
+import ClaimModal from "./ClaimModal";
+import Expiration from "./Expiration";
+import {
+  Button,
+  Header,
+  Container,
+  Image,
+  Card,
+  Divider,
+} from "semantic-ui-react";
 
 function LeftoverDetail(props) {
   const [modal, setModal] = useState();
@@ -63,7 +70,7 @@ function LeftoverDetail(props) {
   }
 
   return (
-    <div>
+    <Container>
       {editComplete ? (
         <Redirect to={`/leftovers/${props.match.params.id}`} />
       ) : (
@@ -71,37 +78,35 @@ function LeftoverDetail(props) {
       )}
       <div>{modal ? modal : ""}</div>
       {leftover ? (
-        <div>
-          <img src={leftover.image.image} width="200" alt={leftover.id} />
-          <h3>{leftover.name}</h3>
-          <p>@{leftover.owner}</p>
-          <p>{leftover.description}</p>
-          <Expiration leftover={leftover}/>
-          <Tags
-            leftover={leftover}
-            editMode={editMode}
-            tagsToAdd={tagsToAdd}
-            setTagsToAdd={setTagsToAdd}
-          />
-          <p>
-            available: <i>{leftover.is_available.toString()}</i>
-          </p>
-        </div>
+        <Container>
+          <Header>{leftover.name}</Header>
+          <Container header={leftover.name} meta={"@" + leftover.owner}>
+            <Image
+              src={leftover.image.image}
+              alt={leftover.id}
+              wrapped
+              width="500"
+            />
+            <Expiration leftover={leftover} />
+            <Card.Content></Card.Content>
+            <Card.Content>
+              <Card.Description>{leftover.description}</Card.Description>
+            </Card.Content>
+            <Tags
+              leftover={leftover}
+              editMode={editMode}
+              tagsToAdd={tagsToAdd}
+              setTagsToAdd={setTagsToAdd}
+            />
+            <Divider />
+          </Container>
+        </Container>
       ) : (
         "No Leftover Detail"
       )}
       {ownerIsLoggedIn ? (
         editMode ? (
           <>
-            {/* <button
-              onClick={() =>
-                setModal(
-                  <DeleteModal setModal={setModal} leftover={leftover} />
-                )
-              }
-            >
-              Delete
-            </button> */}
             <DeleteModal leftover={leftover} />
             <Button onClick={updateLeftover}>Done</Button>
           </>
@@ -109,17 +114,15 @@ function LeftoverDetail(props) {
           <Button onClick={() => setEditMode(true)}>Edit</Button>
         )
       ) : (
-        <button
+        <Button
           onClick={() =>
-            setModal(
-              <ClaimModal setModal={setModal} leftover={leftover} />
-            )
+            setModal(<ClaimModal setModal={setModal} leftover={leftover} />)
           }
         >
           Claim
-        </button>
+        </Button>
       )}
-    </div>
+    </Container>
   );
 }
 
