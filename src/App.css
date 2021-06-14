@@ -56,6 +56,12 @@ font-style: italic;
 
 */
 
+body{
+  font-family: neue-haas-grotesk-text, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
 #logo{
   padding-left: 5px;
   font-family: neue-haas-grotesk-text, sans-serif;

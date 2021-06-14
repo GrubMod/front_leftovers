@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
+import {Button, Icon} from 'semantic-ui-react'
 import { LeftoverContext } from '../LeftoverContext';
 
 
@@ -15,9 +16,11 @@ const AuthButtons = ({ setFormType, handleLogout }) => {
   );
 
   const loggedInNav = (
-    <ul>
-      <li onClick={ handleLogout }>logout</li>
-    </ul>
+
+      <Button color="red" onClick={ handleLogout }>
+        <Icon name="log out" />Logout
+        </Button>
+
   );
   return (
     <div>

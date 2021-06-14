@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, Image } from 'semantic-ui-react';
+import { Menu, Image, Button, Icon } from 'semantic-ui-react';
 import { LeftoverContext } from '../LeftoverContext';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 import AuthButtons from './AuthButtons';
-import logo from '../assets/timer_logo.svg'
+import logo from '../assets/timer_logo.svg';
 
 const NavBar = () => {
     const { state, setState, api_url } = useContext(LeftoverContext);
@@ -122,32 +122,48 @@ const NavBar = () => {
     }, [formType, handleLogin, handleSignup]);
 
     return (
-        <Menu secondary pointing>
+        <Menu secondary pointing id="menu">
             <Menu.Item>
-              <Image src={logo} width={25}/>
-                <Link to="/"><h3 id="logo">Leftovers</h3></Link>
+                <Image src={logo} width={25} />
+                <Link to="/">
+                    <h3 id="logo">Leftovers</h3>
+                </Link>
             </Menu.Item>
 
             <Menu.Item position="right">
-            {state.username ? <h2>{`Hi ${state.username}`}</h2> : ''}
+                {state.username ? (
+                    <p>{`Hi ${state.name ? state.name : state.username}`}</p>
+                ) : (
+                    ''
+                )}
             </Menu.Item>
-            <Menu.Item>
+
             {state.loggedIn ? (
-                <Link to="/add-leftover">
-                    <button>Add Leftover</button>
-                </Link>
+                <Menu.Item>
+                        <Button as={Link} to="/add-leftover"  icon>
+                            <Icon name="add" />
+                            Add Leftover
+                        </Button>
+                        {/* <Button animated>
+                            <Button.Content hidden>
+                                Add&nbsp;Leftover
+                            </Button.Content>
+                            <Button.Content visible>
+                                <Icon style={{ width: '30px' }} name="add" />
+                            </Button.Content>
+                        </Button> */}
+                </Menu.Item>
             ) : (
                 ''
             )}
-            </Menu.Item>
-            <Menu.Item>
-            <AuthButtons
-                setFormType={setFormType}
-                handleLogout={handleLogout}
-            />
-            {form}
-            </Menu.Item>
 
+            <Menu.Item>
+                <AuthButtons
+                    setFormType={setFormType}
+                    handleLogout={handleLogout}
+                />
+                {form}
+            </Menu.Item>
         </Menu>
     );
 };
