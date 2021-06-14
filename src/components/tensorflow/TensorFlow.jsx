@@ -53,8 +53,10 @@ const TensorFlow = () => {
             );
 
             const webcamElement = vid.current;
-            setWebcam(await tf.data.webcam(webcamElement));
+            const webcamConfig = {facingMode: 'environment', resizeWidth: 192, resizeHeight: 192};
+            setWebcam(await tf.data.webcam(webcamElement, webcamConfig));
             setModel(await tf.loadGraphModel(path));
+            
         }
         runSetup();
     }, []);
@@ -109,7 +111,6 @@ const TensorFlow = () => {
                 id="webcam"
                 width="192"
                 height="192"
-                facingMode={{exact: "environment"}}
             >
                 Some video
             </video>
