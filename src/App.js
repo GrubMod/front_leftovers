@@ -3,6 +3,7 @@ import NavBar from './components/NavBar';
 import Body from './components/Body'
 import { LeftoverContext } from './LeftoverContext';
 import './App.css';
+import 'semantic-ui-css/semantic.min.css'
 
 const App = () => {
 

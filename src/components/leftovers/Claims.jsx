@@ -43,9 +43,9 @@ const Claims = () => {
   return (
     orders &&
     <div>
-      <label htmlFor="claim-select">Choose a pet:</label>
+      <label htmlFor="claim-select">Claims:</label>
 
-      <select name="pets" id="claim-select" onChange={handleChange}>
+      <select name="claim-types" id="claim-select" onChange={handleChange}>
           <option value='claims'>Claims</option>
           <option value="requests">Requests</option>
       </select>

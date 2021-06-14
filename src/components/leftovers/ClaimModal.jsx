@@ -16,7 +16,6 @@ function ClaimModal({ setModal, leftover }) {
         },
         reqBody: {
             leftover: leftover.id,
-            is_available: 'false',
         },
     };
 
