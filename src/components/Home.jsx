@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import video from '../assets/dinner720.mov';
 import video480 from '../assets/dinner480.mov';
 import leftoversjpg from '../assets/leftovers.jpg';
+import fatboy from '../assets/fatbobyslim.png';
 import React, { Component } from 'react';
 import {
     Button,
@@ -90,7 +91,7 @@ class DesktopContainer extends Component {
                     autoPlay
                     loop
                     muted
-                    style={{ position: 'absolute', top: 0, left: 0 }}
+                    style={{ position: 'absolute', top: 0, left: 0, minWidth: '100vw' }}
                 >
                     <source src={video} type="video/mp4" />
                 </video>
@@ -285,20 +286,21 @@ const HomepageLayout = () => (
                             style={{
                                 fontSize: '2em',
                                 backgroundColor: '#33ff00',
+                                padding: '.2rem'
                             }}
                         >
                             Leftovers was created to Fight Food Waste
                         </Header>
-                        <p style={{ fontSize: '1.33em' }}>
+                        <p style={{ fontSize: '1.33em', backgroundColor: 'white' }}>
                             We can give your company superpowers to do things
                             that they never thought possible. Let us delight
                             your customers and empower your needs... through
                             pure data analytics.
                         </p>
-                        <Header as="h3" style={{ fontSize: '2em' }}>
+                        <Header as="h3" style={{ fontSize: '2em', backgroundColor: 'white' }}>
                             We Make Bananas That Can Dance
                         </Header>
-                        <p style={{ fontSize: '1.33em' }}>
+                        <p style={{ fontSize: '1.33em', backgroundColor: 'white' }}>
                             Yes that's right, you thought it was the stuff of
                             dreams, but even bananas can be bioengineered.
                         </p>
@@ -337,11 +339,11 @@ const HomepageLayout = () => (
                         style={{ paddingBottom: '5em', paddingTop: '5em' }}
                     >
                         <Header as="h3" style={{ fontSize: '2em' }}>
-                            "I shouldn't have gone with their competitor."
+                            "Eat, sleep, leftovers, repeat!"
                         </Header>
                         <p style={{ fontSize: '1.33em' }}>
-                            <Image avatar src="/images/avatar/large/nan.jpg" />
-                            <b>Nan</b> Chief Fun Officer Acme Toys
+                            <Image avatar src={fatboy} />
+                            <b>Fatboy Slim</b> International DJ
                         </p>
                     </Grid.Column>
                 </Grid.Row>

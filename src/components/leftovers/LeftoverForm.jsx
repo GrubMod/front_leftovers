@@ -1,58 +1,92 @@
-import React, { useContext, useState } from "react";
-import { Redirect } from "react-router";
-import axios from "axios";
-import { LeftoverContext } from "../../LeftoverContext";
-import TagForm from "./TagForm";
+import React, { useContext, useState } from 'react';
+import { Redirect } from 'react-router';
+import axios from 'axios';
+import { LeftoverContext } from '../../LeftoverContext';
+import TagForm from './TagForm';
+import { Form, TextArea, Container, Grid, Checkbox } from 'semantic-ui-react';
 
 function LeftoverForm({ foodImage }) {
-  const { api_url } = useContext(LeftoverContext);
-  const [newLeftoverId, setNewLeftoverId] = useState();
-  const [tagsToAdd, setTagsToAdd] = useState([]);
+    const { api_url } = useContext(LeftoverContext);
+    const [newLeftoverId, setNewLeftoverId] = useState();
+    const [tagsToAdd, setTagsToAdd] = useState([]);
+    const [formDataState, setFormDataState] = useState({ title: '' });
 
-  function createLeftover(e) {
-    e.preventDefault();
-    const url = `${api_url}/leftovers/post`;
-    const formData = e.target;
-    const newLeftover = {
-      name: foodImage.title,
-      expiration: `${formData.expiration.value}:00Z`,
-      image: foodImage.id,
-      description: formData.description.value,
-      quantity: 1,
-      price: 1,
-      tags: tagsToAdd,
-      is_public: formData.is_public.value,
-      is_available: "true",
+    const handleChange = e => {
+        setFormDataState({
+            [e.target.id]: e.target.value,
+        });
     };
-    const config = {
-      headers: {
-        Authorization: `JWT ${localStorage.getItem("token")}`,
-        "Content-Type": "application/json",
-      },
-    };
-    console.log(newLeftover);
-    axios.post(url, newLeftover, config).then((res) => {
-      console.log("THIS IS THE LEFTOVER CREATION RESPONSE", res.data);
-      setNewLeftoverId(res.data.id);
-    });
-  }
-  return (
-    <div>
-      {newLeftoverId ? <Redirect to={`/leftovers/${newLeftoverId}`} /> : ""}
-      <form onSubmit={createLeftover}>
-        <label>Expiration </label>
-        <input name="expiration" type="datetime-local" />
-        <label>Description </label>
-        <textarea name="description" />
-        {/* <label>Price </label>
-        <input name='price' type='number'/> */}
-        <input name="is_public" type="checkbox" value={true} defaultChecked />
-        <label>Make Public? </label>
-        <button type="submit">Post</button>
-      </form>
 
-      <TagForm tagsToAdd={tagsToAdd} setTagsToAdd={setTagsToAdd} />
-    </div>
-  );
+    function createLeftover(e) {
+        e.preventDefault();
+        console.log("THE DATA", formDataState, tagsToAdd)
+        const url = `${api_url}/leftovers/post`;
+        const newLeftover = {
+            name: foodImage.title,
+            expiration: `${formDataState.expiration}:00Z`,
+            image: foodImage.id,
+            description: formDataState.description,
+            quantity: 1,
+            price: 1,
+            tags: tagsToAdd,
+            is_public: formDataState.is_public,
+            is_available: 'true',
+        };
+        const config = {
+            headers: {
+                Authorization: `JWT ${localStorage.getItem('token')}`,
+                'Content-Type': 'application/json',
+            },
+        };
+        console.log(newLeftover);
+        axios.post(url, newLeftover, config).then(res => {
+            console.log('THIS IS THE LEFTOVER CREATION RESPONSE', res.data);
+            setNewLeftoverId(res.data.id);
+        });
+    }
+    return (
+
+
+            <Container centered style={{padding:"1rem"}}>
+            {newLeftoverId ? (
+                <Redirect to={`/leftovers/${newLeftoverId}`} />
+            ) : (
+                ''
+            )}
+            <Form onSubmit={e => { e.preventDefault(); }}>
+                    <Form.Input
+                        placeholder="expiration"
+                        type="datetime-local"
+                        name="expiration"
+                        id="expiration"
+                        value={formDataState.expiration}
+                        onChange={handleChange}
+                    />
+                    <TextArea
+                        placeholder="What's the story behind this leftover?"
+                        name="description"
+                        id="description"
+                        value={formDataState.description}
+                        onChange={handleChange}
+                    />
+                    <Checkbox 
+                        name="is_public"
+                        id="is_public"
+                        type="checkbox"
+                        value={formDataState.description}
+                        label="Make it publicly available?"
+                        defaultChecked
+                        onChange={handleChange}
+                    />
+
+            </Form>
+            
+            <Container>
+            <TagForm tagsToAdd={tagsToAdd} setTagsToAdd={setTagsToAdd} />
+            </Container>
+                    
+                    <Form.Button content="Submit Leftover" onClick={createLeftover} />
+            </Container>
+    );
 }
 export default LeftoverForm;
