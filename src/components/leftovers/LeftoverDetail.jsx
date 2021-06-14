@@ -16,7 +16,7 @@ import {
 } from "semantic-ui-react";
 
 function LeftoverDetail(props) {
-  const [modal, setModal] = useState();
+  const [claimClicked, setClaimClicked] = useState(false);
   const [leftover, setLeftover] = useState();
   const [ownerIsLoggedIn, setOwnerIsLoggedIn] = useState();
   const [editMode, setEditMode] = useState(false);
@@ -76,11 +76,11 @@ function LeftoverDetail(props) {
       ) : (
         ""
       )}
-      <div>{modal ? modal : ""}</div>
+
       {leftover ? (
         <Container>
           <Header>{leftover.name}</Header>
-          <Container header={leftover.name} meta={"@" + leftover.owner}>
+          <Container header={leftover.name}>
             <Image
               src={leftover.image.image}
               alt={leftover.id}
@@ -88,10 +88,11 @@ function LeftoverDetail(props) {
               width="500"
             />
             <Expiration leftover={leftover} />
-            <Card.Content></Card.Content>
+            <Divider />
             <Card.Content>
               <Card.Description>{leftover.description}</Card.Description>
             </Card.Content>
+            <Card.Content>{"@" + leftover.owner}</Card.Content>
             <Tags
               leftover={leftover}
               editMode={editMode}
@@ -114,13 +115,16 @@ function LeftoverDetail(props) {
           <Button onClick={() => setEditMode(true)}>Edit</Button>
         )
       ) : (
-        <Button
-          onClick={() =>
-            setModal(<ClaimModal setModal={setModal} leftover={leftover} />)
-          }
-        >
-          Claim
-        </Button>
+        <>
+          {claimClicked ? <ClaimModal leftover={leftover} /> : ""}
+          <Button
+            onClick={() => {
+              setClaimClicked(a => !a);
+            }}
+          >
+            Claim
+          </Button>
+        </>
       )}
     </Container>
   );

@@ -5,7 +5,7 @@ import { Button, Header, Icon, Modal } from "semantic-ui-react";
 import axios from "axios";
 
 function ClaimModal({ setModal, leftover }) {
-  const { api_url } = useContext(LeftoverContext);
+  const { state, api_url } = useContext(LeftoverContext);
   const [claim, setClaim] = useState();
   const [open, setOpen] = React.useState(false);
 
@@ -18,7 +18,13 @@ function ClaimModal({ setModal, leftover }) {
       },
     },
     reqBody: {
-      leftover: leftover.id,
+      "leftover": leftover.id,
+        "claimed_by": state.userId,
+        "approved": false,
+        "rejected": false,
+        "cancelled": false,
+        "picked_up": false,
+        "completed": false
     },
   };
 
@@ -35,7 +41,7 @@ function ClaimModal({ setModal, leftover }) {
   }
   return (
     <div>
-      {claim ? <Redirect to={`/claims/`} /> : ""}
+      {claim ? <Redirect to="/claims/" /> : ""}
       <Modal
         basic
         onClose={() => setOpen(false)}

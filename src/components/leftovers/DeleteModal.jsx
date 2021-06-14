@@ -19,6 +19,7 @@ function DeleteModal({ setModal, leftover }) {
     },
     reqBody: { is_available: "false" },
   };
+  
   function deleteLeftover(deleteRequest) {
     axios
       .patch(deleteRequest.url, deleteRequest.reqBody, deleteRequest.config)
@@ -47,11 +48,8 @@ function DeleteModal({ setModal, leftover }) {
       >
         <Header icon>
           <Icon name="trash" />
-          Archive Old Messages
+          Are you sure you want to delete this leftover
         </Header>
-        <Modal.Content centered>
-          <h2>Are you sure you want to delete this leftover</h2>
-        </Modal.Content>
         <Modal.Actions>
           <Button
             basic
