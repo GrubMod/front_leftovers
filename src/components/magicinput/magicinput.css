@@ -1,0 +1,12 @@
+input.magic {
+  font-size: inherit;
+  border: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  display: inherit;
+  color: #666;
+}
+
+input.magic:focus {
+  outline: 0;
+}
