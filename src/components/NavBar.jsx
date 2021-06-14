@@ -102,9 +102,7 @@ const NavBar = () => {
                         loggedIn: true,
                         username: json.username,
                         userId: json.id,
-                        name:
-                            json.first_name.charAt(0).toUpperCase() +
-                            json.first_name.slice(1).toLowerCase(),
+                        name: json.first_name.charAt(0).toUpperCase()+json.first_name.slice(1).toLowerCase()
                     });
                 })
                 .catch(err => console.log('THIS IS THE ERROR', err));
@@ -133,7 +131,7 @@ const NavBar = () => {
                 </Link>
             </Menu.Item>
 
-            <Menu.Item position="right">
+            <Menu.Item position="left">
                 {state.username ? (
                     <p>{`Hi ${state.name ? state.name : state.username}`}</p>
                 ) : (

@@ -1,5 +1,5 @@
 import React from "react";
-import { List, Label, Icon, Button } from "semantic-ui-react";
+import { List, Label, Icon, Input, Form } from "semantic-ui-react";
 
 function TagForm({ tagsToAdd, setTagsToAdd }) {
   function addTag(e) {
@@ -9,11 +9,12 @@ function TagForm({ tagsToAdd, setTagsToAdd }) {
       newTags.push(e.target.tag.value.trim());
       setTagsToAdd(newTags);
     }
+    e.target.tag.value = ""
   }
 
   function removeTag(e) {
     e.preventDefault();
-    const newTags = tagsToAdd.filter((tag) => tag !== e.target.name);
+    const newTags = tagsToAdd.filter((tag) => tag !== e.target.innerText);
     setTagsToAdd(newTags);
   }
 
@@ -22,26 +23,27 @@ function TagForm({ tagsToAdd, setTagsToAdd }) {
   const tagList = tagsToAdd.map((tagStr) => {
     return (
       <List.Item>
-        <Button as="div" labelPosition="left" name={tagStr} onClick={removeTag}>
-          <Label as="a" basic>
-            {tagStr}
-          </Label>
-          <Button icon>
-            <Icon name="fork" />
-          </Button>
-        </Button>
+        <Label name={tagStr} onClick={removeTag}>
+          {tagStr}
+          <Icon name="delete" />
+        </Label>
       </List.Item>
     );
   });
 
   return (
     <div>
-      <form onSubmit={addTag}>
-        <label>Enter Tag: </label>
-        <input name="tag" type="text"></input>
-        <button type="submit">add tag</button>
-      </form>
-      <List>{tagList}</List>
+      <Form onSubmit={addTag}>
+        <Input
+          name="tag"
+          icon="tags"
+          iconPosition="left"
+          label={{ tag: true, content: "Add Tag" }}
+          labelPosition="right"
+          placeholder="Enter tags"
+        />
+      </Form>
+      <List horizontal>{tagList}</List>
     </div>
   );
 }
