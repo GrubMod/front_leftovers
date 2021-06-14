@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { LeftoverContext } from "../../LeftoverContext";
+import { Card, Grid } from 'semantic-ui-react'
 import Leftover from "./Leftover";
 
 function Leftovers() {
@@ -19,13 +20,12 @@ function Leftovers() {
   }, [api_url]);
 
   return (
-    state.loggedIn &&
     leftovers && (
-      <div>
+      <Grid centered>
         {leftovers.map((leftover, i) => (
           <Leftover key={i} leftover={leftover} />
         ))}
-      </div>
+      </Grid>
     )
   );
 }

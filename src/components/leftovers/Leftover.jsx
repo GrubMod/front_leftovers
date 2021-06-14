@@ -1,21 +1,35 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import Tags from "./Tags";
-import Expiration from './Expiration'
+import React from 'react';
+import { Card, Icon, Image, Grid } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
+import Tags from './Tags';
+import Expiration from './Expiration';
 
 function Leftover({ leftover }) {
-  return (
-    <Link to={`/leftovers/${leftover.id}`}>
-      <img src={leftover.image.image} width="200" alt={leftover.id} />
-      <h3>{leftover.name}</h3>
-      <p>@{leftover.owner}</p>
-      <p>expiration date: @{leftover.expiration}</p>
-      <Expiration leftover={leftover}/>
-      <Tags leftover={leftover} />
-      <br />
-      <br />
-    </Link>
-  );
+    return (
+        <Grid.Column mobile={15} tablet={6} computer={4}>
+            <Card as={Link} to={`/leftovers/${leftover.id}`}>
+                <Image src={leftover.image.image} wrapped ui={false} />
+                <Card.Content>
+                    <Card.Header>{leftover.name}</Card.Header>
+                    <Card.Meta>
+                        <span className="date">@{leftover.owner}</span>
+                    </Card.Meta>
+                    <Card.Description>
+                        Matthew is a musician living in Nashville.
+                        <caption>
+                            expiration date: @{leftover.expiration}
+                        </caption>
+                    </Card.Description>
+                </Card.Content>
+                <Card.Content>
+                    <Expiration leftover={leftover} />
+                </Card.Content>
+                <Card.Content extra>
+                    <Tags leftover={leftover} />
+                </Card.Content>
+            </Card>
+        </Grid.Column>
+    );
 }
 
 export default Leftover;

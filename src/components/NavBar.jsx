@@ -6,16 +6,19 @@ import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 import AuthButtons from './AuthButtons';
 import logo from '../assets/timer_logo.svg';
+import Heart from "react-animated-heart";
 
 const NavBar = () => {
     const { state, setState, api_url } = useContext(LeftoverContext);
     const [form, setForm] = useState(null);
     const [formType, setFormType] = useState(null);
+    const [isClick, setClick] = useState(false);
 
     const catchError = useCallback(error => {
         console.log(error);
     }, []);
 
+    
     const handleLogin = useCallback(
         (e, data) => {
             e.preventDefault();
@@ -139,19 +142,15 @@ const NavBar = () => {
             </Menu.Item>
 
             {state.loggedIn ? (
-                <Menu.Item>
-                        <Button as={Link} to="/add-leftover"  icon>
-                            <Icon name="add" />
-                            Add Leftover
-                        </Button>
-                        {/* <Button animated>
-                            <Button.Content hidden>
-                                Add&nbsp;Leftover
-                            </Button.Content>
+                <Menu.Item style={{paddingRight:0}}>
+                        <Button as={Link} to="/add-leftover" animated='fade'>
                             <Button.Content visible>
-                                <Icon style={{ width: '30px' }} name="add" />
+                              <Icon name="add" /> Add Leftover
                             </Button.Content>
-                        </Button> */}
+                            <Button.Content hidden>
+                              <Icon color="red" name="heart" /> Add Love
+                            </Button.Content>
+                        </Button>
                 </Menu.Item>
             ) : (
                 ''
