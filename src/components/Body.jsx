@@ -27,7 +27,6 @@ function Body(props) {
                 <Route exact path="/add-leftover" component={AddLeftover} />
                 <Route exact path="/add" component={TensorFlow} />
                 <Route exact path="/" component={Leftovers} />
-                <Route exact path="/landing" component={Landing} />
 
                 <Route
                     exact

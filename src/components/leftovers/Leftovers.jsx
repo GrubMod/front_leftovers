@@ -10,6 +10,7 @@ import {
   Header,
 } from "semantic-ui-react";
 import Leftover from "./Leftover";
+import { Redirect } from "react-router-dom";
 
 function Leftovers() {
   const [leftovers, setLeftovers] = useState([]);
@@ -26,6 +27,7 @@ function Leftovers() {
   }, [api_url]);
 
   return (
+    !state.loggedIn ? <Redirect to="/home" /> :
     leftovers && (
       <Container>
         {myFridge ? (
@@ -54,12 +56,10 @@ function Leftovers() {
           </div>
         ) : (
           <Container textAlign="justified">
-          <Header as="h2">Leftovers in Your Area</Header>
-          <Divider />
-          <p>
-            These are the leftovers that currently listed in your area.  
-          </p>
-        </Container>
+            <Header as="h2">Leftovers in Your Area</Header>
+            <Divider />
+            <p>These are the leftovers that currently listed in your area.</p>
+          </Container>
         )}
 
         <Grid centered>

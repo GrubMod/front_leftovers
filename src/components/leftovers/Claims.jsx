@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { LeftoverContext } from "../../LeftoverContext";
 import Claim from "./Claim";
+import { Redirect } from "react-router-dom";
 
 const Claims = () => {
   const { state, api_url } = useContext(LeftoverContext);
@@ -40,6 +41,7 @@ const Claims = () => {
   const pending = orders.filter((i) => !i.completed && !i.approved);
 
   return (
+    !state.loggedIn ? <Redirect to="/home" /> :
     orders && (
       <div>
         <label htmlFor="claim-select">Leftovers I am </label>

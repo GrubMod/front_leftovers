@@ -9,7 +9,7 @@ import { Route, Switch } from 'react-router-dom';
 
 const App = () => {
     const [state, setState] = useState({
-        loggedIn: localStorage.getItem('token') ? true : false,
+        loggedIn: false,
         username: '',
     });
 

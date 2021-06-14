@@ -9,7 +9,7 @@ function TagForm({ tagsToAdd, setTagsToAdd }) {
       newTags.push(e.target.tag.value.trim());
       setTagsToAdd(newTags);
     }
-    e.target.tag.value = ""
+    e.target.tag.value = "";
   }
 
   function removeTag(e) {
@@ -20,10 +20,10 @@ function TagForm({ tagsToAdd, setTagsToAdd }) {
 
   // TODO: Need to add axios lookup of all tags available and input them into the drop down menu of the input
 
-  const tagList = tagsToAdd.map((tagStr) => {
+  const tagList = tagsToAdd.map((tagStr, i) => {
     return (
       <List.Item>
-        <Label name={tagStr} onClick={removeTag}>
+        <Label name={tagStr} onClick={removeTag} key={i}>
           {tagStr}
           <Icon name="delete" />
         </Label>
