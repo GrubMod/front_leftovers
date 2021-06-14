@@ -3,7 +3,7 @@ import { LeftoverContext } from '../../LeftoverContext';
 import axios from 'axios';
 import {Container, Image, Form, Ref, Card, Grid} from 'semantic-ui-react';
 
-function FoodImageForm({ foodImage, setFoodImage }) {
+function FoodImageForm({ foodImage, setFoodImage, formDataProp }) {
     const { api_url } = useContext(LeftoverContext);
     const fileInput = useRef();
     const [formDataState, setFormDataState] = useState({ title: '' });
@@ -23,13 +23,19 @@ function FoodImageForm({ foodImage, setFoodImage }) {
         e.preventDefault();
         const url = `${api_url}/food-images/`;
 
+
         let form_data = new FormData();
-        form_data.append('title', formDataState.title);
-        form_data.append(
-            'image',
-            fileInput.current.querySelector('input').files[0],
-            fileInput.current.querySelector('input').files[0].name
-        );
+        
+        if(formDataProp){
+            form_data = formDataProp
+        }else{
+            form_data.append('title', formDataState.title);
+            form_data.append(
+                'image',
+                fileInput.current.querySelector('input').files[0],
+                fileInput.current.querySelector('input').files[0].name
+            );
+        }
 
         const config = {
             headers: {

@@ -29,16 +29,41 @@ function csvReader(url) {
 
 // runTest();
 
-const TensorFlow = () => {
+const LeftoverTensor = ({ setFormDataProp }) => {
     const vid = useRef(null);
     const predictionConsole = useRef(null);
     const canvas = useRef(null);
+    const hiddenField = useRef(null);
 
     const [predictions, setPredictions] = useState();
 
     const [labels, setLabels] = useState();
     const [webcam, setWebcam] = useState();
     const [model, setModel] = useState();
+    const [title, setTitle] = useState();
+    const [selectedLabel, setSelectedLabel] = useState();
+
+    function populateForm(){
+        const imgData = canvas.current.toDataURL('image/png');
+        hiddenField.current.setAttribute("value", imgData);
+
+        const formData = new FormData()
+        formData.append('title', title);
+        formData.append(
+            'image',
+            hiddenField.current.querySelector('input').files[0],
+            selectedLabel
+        );
+        setFormDataProp(formData)
+    }
+
+    function selectTag(ev){
+        // setSelectedLabel(ev.target.innerText.split()[0])
+        const label = ev.target.innerText.split()[0];
+        console.log("THIS IS MY LABEL", label)
+        populateForm()
+    }
+
 
     useEffect(() => {
         function isMobileDevice() {
@@ -86,6 +111,7 @@ const TensorFlow = () => {
         // console.log("THIS IS MY IMAGE:", tf_node.node.encodeJpeg(img))
         // img.arraySync() -- image array
 
+
         const imgArray = img.arraySync();
         const flatArray = [];
         imgArray.forEach(row =>
@@ -101,6 +127,8 @@ const TensorFlow = () => {
         const ctx = canvas.current.getContext('2d');
         ctx.putImageData(imgData, 0, 0);
         window.clampedArr = clampedArr;
+
+        
 
         const processed_img = img.expandDims(0).toFloat().div(255);
         const result = await model.predict(processed_img);
@@ -149,13 +177,21 @@ const TensorFlow = () => {
             <div ref={predictionConsole} id="console" style={{width:"100%", textAlign:"center"}}>
             {predictions ? <h2>Choose prediction or create label</h2> : ''}
                 {predictions
-                    ? predictions.map(label => <Button style={{fontSize:"2rem", margin:"5px"}}>{ label }</Button> )
+                    ? predictions.map(label => <Button onClick={selectTag} style={{fontSize:"2rem", margin:"5px"}}>{ label }</Button> )
                     : 'NO PREDICTIONS YET'}
                     {predictions ? <Button style={{fontSize:"2rem", margin:"5px"}}>{ "Add my own label" }</Button>: ''}
             </div>
             <canvas style={{display: "block", margin:"20px auto"}} width="192" height="192" ref={canvas}></canvas>
+            <input
+              ref={hiddenField}
+              type="hidden"
+              id="image"
+              accept="image/png, image/jpeg"
+              required
+            />
         </Container>
+        
     );
 };
 
-export default TensorFlow;
+export default LeftoverTensor;
