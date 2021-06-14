@@ -6,6 +6,7 @@ import Tags from "./Tags";
 import DeleteModal from './DeleteModal'
 import ClaimModal from './ClaimModal'
 import Expiration from './Expiration'
+import { Button } from "semantic-ui-react";
 
 function LeftoverDetail(props) {
   const [modal, setModal] = useState();
@@ -92,7 +93,7 @@ function LeftoverDetail(props) {
       {ownerIsLoggedIn ? (
         editMode ? (
           <>
-            <button
+            {/* <button
               onClick={() =>
                 setModal(
                   <DeleteModal setModal={setModal} leftover={leftover} />
@@ -100,11 +101,12 @@ function LeftoverDetail(props) {
               }
             >
               Delete
-            </button>
-            <button onClick={updateLeftover}>Done</button>
+            </button> */}
+            <DeleteModal leftover={leftover} />
+            <Button onClick={updateLeftover}>Done</Button>
           </>
         ) : (
-          <button onClick={() => setEditMode(true)}>Edit</button>
+          <Button onClick={() => setEditMode(true)}>Edit</Button>
         )
       ) : (
         <button
