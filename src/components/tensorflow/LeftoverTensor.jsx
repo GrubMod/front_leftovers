@@ -1,39 +1,31 @@
 import { transform } from '@babel/core';
 import { render } from '@testing-library/react';
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useContext } from 'react';
+import { LeftoverContext } from '../../LeftoverContext';
+
 import { Container, Button, Icon, Grid } from 'semantic-ui-react';
 import SelectButton from './SelectButton';
+import * as d3 from 'd3';
+import csvData from './dependencies/labels.csv';
+import axios from 'axios';
+
 
 const local_address = process.env.REACT_APP_LOCAL_ADDRESS;
-// console.log("THIS IS MY CSV")
-// const reader = new FileReader();
-// console.log(reader.readAsText(csv))
 
 const tf = require('@tensorflow/tfjs');
-// const tf_node = require('@tensorflow/tfjs-node');
 
 const path = `${local_address}/models/model.json`;
 
-// async function getModel() { return await tf.loadGraphModel(path + '/model.json')}
-
-function csvReader(url) {
-    return fetch(url).then(function (response) {
-        let reader = response.body.getReader();
-        let decoder = new TextDecoder('utf-8');
-
-        return reader.read().then(function (result) {
-            return decoder.decode(result.value);
-        });
-    });
-}
 
 // runTest();
 
-const LeftoverTensor = ({ setFormDataProp }) => {
+const LeftoverTensor = ({ setFormDataProp, setFoodImage }) => {
     const vid = useRef(null);
     const predictionConsole = useRef(null);
     const canvas = useRef(null);
     const hiddenField = useRef(null);
+
+    const { api_url } = useContext(LeftoverContext);
 
     const [predictions, setPredictions] = useState();
 
@@ -43,25 +35,51 @@ const LeftoverTensor = ({ setFormDataProp }) => {
     const [title, setTitle] = useState();
     const [selectedLabel, setSelectedLabel] = useState();
 
-    function populateForm(){
-        const imgData = canvas.current.toDataURL('image/png');
-        hiddenField.current.setAttribute("value", imgData);
-
+    async function populateForm(label){
         const formData = new FormData()
-        formData.append('title', title);
-        formData.append(
-            'image',
-            hiddenField.current.querySelector('input').files[0],
-            selectedLabel
-        );
-        setFormDataProp(formData)
+        // const imgData = canvas.current.toDataURL('image/png');
+        console.log(canvas.current)
+        await canvas.current.toBlob(blob => {
+            formData.append('title', label);
+            let file = new File([blob], label.toLowerCase() + '.png', { type: "image/png" })
+            console.log("THIS IS THE LABEL", label.toLowerCase() + '.png' )
+            formData.append(
+                'image',
+                file                
+            );
+
+            const url = `${api_url}/food-images/`;
+
+
+            console.log(formData.get('image'))
+            console.log(formData.get('title'))
+    
+    
+            const config = {
+                headers: {
+                    Authorization: `JWT ${localStorage.getItem('token')}`,
+                    'Content-Type': 'multipart/form-data',
+                },
+            };
+    
+            axios
+                .post(url, formData, config)
+                .then(res => {
+                    console.log(res);
+                    setFoodImage(res.data);
+                })
+                .catch(error => console.error);
+
+            setFormDataProp(formData);
+        });
+        // hiddenField.current.setAttribute("value", imgData);
+        
     }
 
     function selectTag(ev){
         // setSelectedLabel(ev.target.innerText.split()[0])
-        const label = ev.target.innerText.split()[0];
-        console.log("THIS IS MY LABEL", label)
-        populateForm()
+        const label = ev.target.value;
+        populateForm(label)
     }
 
 
@@ -80,17 +98,10 @@ const LeftoverTensor = ({ setFormDataProp }) => {
     // SETUP
     useEffect(() => {
         async function runSetup() {
-            const csvFile = await csvReader(
-                `${local_address}/models/labels.csv`
-            );
-
-            setLabels(
-                csvFile
-                    .split('\r')
-                    .slice(1)
-                    .map(i => i.split(',')[1])
-            );
-
+            // Load labels from CSV file
+            const data = await d3.csv(csvData);
+            setLabels(data.map(d => d.name).slice(1));
+            // Start webcam stream
             const webcamElement = vid.current;
             const webcamConfig = {
                 facingMode: 'environment',
@@ -140,17 +151,12 @@ const LeftoverTensor = ({ setFormDataProp }) => {
             .shift()
             .map(i => labels[i]);
         const predictedProbs = topK['values'].arraySync().shift();
-        // tf
-        //     .topk(result, 5)
-        //     ['indices'].arraySync()
-        //     .shift()
-        //     .map(i => labels[i])
-        // );
+
         console.log(predictions);
-        // console.log(labels[labelIndex]);
+
         setPredictions(
             predictedLabels.map(
-                (val, i) => `${val} ${Math.round(predictedProbs[i] * 100)}%`
+                (val, i) => ({val: val, text: `${val} ${Math.round(predictedProbs[i] * 100)}%`})
             )
         );
         // img.dispose(); This image object needs to be passed down
@@ -175,20 +181,18 @@ const LeftoverTensor = ({ setFormDataProp }) => {
             </video>
             <Button style={{margin:"50px auto", display:"block"}}  size='huge' onClick={() => runPrediction()}><Icon name="camera retro" />CAPTURE FOOD</Button>
             <div ref={predictionConsole} id="console" style={{width:"100%", textAlign:"center"}}>
-            {predictions ? <h2>Choose prediction or create label</h2> : ''}
+                <canvas style={{display: "block", margin:"20px auto"}} width="192" height="192" ref={canvas}></canvas>
+            {predictions ? (
+                <>
+            <h2>Choose prediction or create label</h2>
+                </>
+            ) : ''}
                 {predictions
-                    ? predictions.map(label => <Button onClick={selectTag} style={{fontSize:"2rem", margin:"5px"}}>{ label }</Button> )
+                    ? predictions.map(label => <Button onClick={selectTag} style={{fontSize:"2rem", margin:"5px"}} value={ label.val }>{ label.text }</Button> )
                     : 'NO PREDICTIONS YET'}
                     {predictions ? <Button style={{fontSize:"2rem", margin:"5px"}}>{ "Add my own label" }</Button>: ''}
             </div>
-            <canvas style={{display: "block", margin:"20px auto"}} width="192" height="192" ref={canvas}></canvas>
-            <input
-              ref={hiddenField}
-              type="hidden"
-              id="image"
-              accept="image/png, image/jpeg"
-              required
-            />
+
         </Container>
         
     );
