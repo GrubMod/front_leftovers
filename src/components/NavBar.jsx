@@ -127,7 +127,7 @@ const NavBar = () => {
     <Menu secondary pointing id="menu">
       <Menu.Item>
         <Image src={logo} width={25} />
-        <Link to="/home">
+        <Link to="/">
           <h3 id="logo">Leftovers</h3>
         </Link>
       </Menu.Item>

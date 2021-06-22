@@ -1,6 +1,6 @@
 import React, { useState, useContext, useCallback} from 'react';
 import { LeftoverContext } from "../LeftoverContext";
-import { Redirect, Link } from 'react-router-dom';
+import { Redirect, Link, useHistory } from 'react-router-dom';
 import logo from '../assets/timer_logo.svg';
 
 import {
@@ -12,11 +12,14 @@ import {
     Message,
     Segment,
 } from 'semantic-ui-react';
+import { useEffect } from 'react';
 
 const LoginForm = () => {
 
     const { state, setState, api_url } = useContext(LeftoverContext);
     const [ credentials, setCredentials ] =  useState({username: '', password: ''})
+    const history = useHistory();
+    
 
     const handleChange = e => {
       const name = e.target.name;
@@ -46,6 +49,7 @@ const LoginForm = () => {
                         loggedIn: true,
                         username: json.user.username,
                     });
+                    history.goBack();
                 });
         },
         [setState, api_url]
@@ -57,7 +61,6 @@ const LoginForm = () => {
             style={{ height: '100vh' }}
             verticalAlign="middle"
         >
-            {state.loggedIn ? <Redirect to="/" /> : ''}   
             <Grid.Column style={{ maxWidth: 450 }}>
                 <Header color="gray" as="h2" textAlign="center">
                 <Image src={logo} style={{display:"block", margin:"auto"}} />

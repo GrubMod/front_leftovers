@@ -26,7 +26,7 @@ function Body(props) {
                 <Route exact path="/signup" component={SignUpForm} />
                 <Route exact path="/add-leftover" component={AddLeftover} />
                 <Route exact path="/add" component={TensorFlow} />
-                <Route exact path="/" component={Leftovers} />
+                <Route exact path="/public" component={Leftovers} />
 
                 <Route
                     exact

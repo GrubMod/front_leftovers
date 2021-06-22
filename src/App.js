@@ -17,13 +17,18 @@ const App = () => {
 
     return (
         <LeftoverContext.Provider value={{ state, setState, api_url }}>
-            <Switch>
-              <Route exact path="/home" component={HomepageLayout} />
-              <Route path="/">
-                <NavBar />
-                <Body />
-              </Route>
-            </Switch>
+            <Route
+                render={({ location }) =>
+                    ['/', '/home'].includes(location.pathname) ? (
+                        <HomepageLayout />
+                    ) : (
+                        <>
+                            <NavBar />
+                            <Body />
+                        </>
+                    )
+                }
+            />
         </LeftoverContext.Provider>
     );
 };

@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Redirect } from "react-router";
+import { Redirect, useHistory } from "react-router-dom";
 import { LeftoverContext } from "../../LeftoverContext";
 import { Button, Header, Icon, Modal } from "semantic-ui-react";
 import axios from "axios";
@@ -8,6 +8,7 @@ function DeleteModal({ setModal, leftover }) {
   const { api_url } = useContext(LeftoverContext);
   const [deleted, setDeleted] = useState(false);
   const [open, setOpen] = React.useState(false);
+  const history = useHistory();
 
   const deleteRequest = {
     url: `${api_url}/leftovers/${leftover.id}`,
@@ -24,6 +25,7 @@ function DeleteModal({ setModal, leftover }) {
     axios
       .patch(deleteRequest.url, deleteRequest.reqBody, deleteRequest.config)
       .then((res) => {
+        history.goBack()
         setDeleted(true);
         setModal();
       })
@@ -31,7 +33,7 @@ function DeleteModal({ setModal, leftover }) {
   }
   return (
     <div>
-      {deleted ? <Redirect to="/" /> : ""}
+      {/* {deleted ? <Redirect to={location.state && location.state.referer} /> : ""} */}
       <Modal
         basic
         onClose={() => setOpen(false)}

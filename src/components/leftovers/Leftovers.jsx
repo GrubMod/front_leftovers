@@ -27,7 +27,6 @@ function Leftovers() {
   }, [api_url]);
 
   return (
-    !state.loggedIn ? <Redirect to="/home" /> :
     leftovers && (
       <Container>
         {myFridge ? (
