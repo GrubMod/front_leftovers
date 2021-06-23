@@ -100,7 +100,7 @@ const LeftoverTensor = ({ setFormDataProp, setFoodImage }) => {
         async function runSetup() {
             // Load labels from CSV file
             const data = await d3.csv(csvData);
-            setLabels(data.map(d => d.name).slice(1));
+            setLabels(data.map(d => d.name));
             // Start webcam stream
             const webcamElement = vid.current;
             const webcamConfig = {
