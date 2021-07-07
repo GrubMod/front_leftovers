@@ -64,12 +64,17 @@ function Claim({ claim, claimType }) {
       <p>@{leftover.owner}</p>
       <Expiration leftover={leftover} />
 
-      {claimType === "claims" ? (
+      
+
+      {!claim.completed && claimType === "claims" ? (
         <>
           {claim.approved ? (
+            <>
+            <button name='show email'>Show Email</button>
             <button name="picked_up" onClick={pickupOrder}>
               Pickup
             </button>
+            </>
           ) : (
             ""
           )}
@@ -81,7 +86,8 @@ function Claim({ claim, claimType }) {
         ""
       )}
 
-      {claimType === "requests" ? (
+      {!claim.completed && claimType === "requests" ? (
+        
         <>
           {!claim.approved ? (
             <>

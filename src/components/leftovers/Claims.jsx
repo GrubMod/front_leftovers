@@ -4,13 +4,17 @@ import { LeftoverContext } from "../../LeftoverContext";
 import Claim from "./Claim";
 import { Redirect } from "react-router-dom";
 
+function titleCase(str) {
+  return str[0].toUpperCase()+str.slice(1)
+}
+
 const Claims = () => {
   const { state, api_url } = useContext(LeftoverContext);
   const [orders, setOrders] = useState([]);
   const [claimType, setClaimType] = useState("claims");
-  // const [approved, setApproved] = useState([]);        // Dont delete these
-  // const [pending, setPending] = useState([]);          // Dont delete these
-
+  const [approved, setApproved] = useState([]);        // Dont delete these
+  const [pending, setPending] = useState([]);          // Dont delete these
+  const [completed, setCompleted] = useState([]);          // Dont delete these
   useEffect(() => {
     const claimRequest = {
       url: `${api_url}/orders/${claimType}/`,
@@ -27,6 +31,10 @@ const Claims = () => {
       .then((res) => {
         console.log(res.data);
         setOrders(res.data);
+        setApproved(res.data.filter((i) => !i.completed && i.approved))
+        setPending(res.data.filter((i) => !i.completed && !i.approved))
+        setCompleted(res.data.filter((i) => i.completed))
+
       })
       .catch(console.error);
   }, [api_url, claimType]);
@@ -36,9 +44,6 @@ const Claims = () => {
     const path = ev.target.options[index].value;
     setClaimType(path);
   };
-
-  const approved = orders.filter((i) => !i.completed && i.approved);
-  const pending = orders.filter((i) => !i.completed && !i.approved);
 
   return (
     !state.loggedIn ? <Redirect to="/home" /> :
@@ -52,14 +57,20 @@ const Claims = () => {
 
         <div>
           <h2>Ready for Pick-Up</h2>
-          {approved.map((order) => (
-            <Claim claim={order} claimType={claimType}/>
+          {approved.map(claim => (
+            <Claim claim={claim} claimType={claimType}/>
           ))}
         </div>
         <div>
           <h2>Pending Approval</h2>
-          {pending.map((order) => (
-            <Claim claim={order} claimType={claimType}/>
+          {pending.map(claim => (
+            <Claim claim={claim} claimType={claimType}/>
+          ))}
+        </div>
+        <div>
+          <h2>Completed {titleCase(claimType)}</h2>
+          {completed.map(claim => (
+            <Claim claim={claim} claimType={claimType}/>
           ))}
         </div>
       </div>
