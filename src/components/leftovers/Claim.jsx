@@ -2,6 +2,12 @@ import React, { useState, useContext } from "react";
 import { LeftoverContext } from "../../LeftoverContext";
 import axios from "axios";
 import Expiration from "./Expiration";
+import { Card, Container, Button, Divider } from "semantic-ui-react";
+
+// TODO: Need the following function in our tools that we can import
+function titleCase(str) {
+  return str[0].toUpperCase() + str.slice(1).toLowerCase();
+}
 
 function Claim({ claim, claimType }) {
   const { state, api_url } = useContext(LeftoverContext);
@@ -58,56 +64,80 @@ function Claim({ claim, claimType }) {
   }
 
   return (
-    <div>
-      <img src={leftover.image.image} height="100" alt={claim.leftover.name} />
-      <h3>{leftover.name}</h3>
-      <p>@{leftover.owner}</p>
-      <Expiration leftover={leftover} />
+    <Card>
+      <img src={leftover.image.image} width="100%" alt={claim.leftover.name} />
+      <Container centered style={{ padding: "1rem" }}>
+        <h3>{leftover.name}</h3>
+        <p>@{leftover.owner}</p>
+        <Divider />
+        <Expiration leftover={leftover} />
 
-      
+        {!claim.completed && claimType === "claims" ? (
+          <>
+            {claim.approved ? (
+              <>
+                <p>
+                  The provider has approved your claim request.{" "}
+                  {titleCase(claim.leftover.owner)} with contact you directly at{" "}
+                  {claim.claimed_by.email}
+                </p>
+                <Button.Group basic>
+                  <Button name="picked_up" onClick={pickupOrder}>
+                    Pickup
+                  </Button>
+                  <Button name="cancelled" onClick={cancelOrder}>
+                    Cancel
+                  </Button>
+                </Button.Group>
+              </>
+            ) : (
+              <>
+                <p></p>
+                <Button.Group basic>
+                  <Button name="cancelled" onClick={cancelOrder}>
+                    Cancel
+                  </Button>
+                </Button.Group>
+              </>
+            )}
+          </>
+        ) : (
+          ""
+        )}
 
-      {!claim.completed && claimType === "claims" ? (
-        <>
-          {claim.approved ? (
-            <>
-            <button name='show email'>Show Email</button>
-            <button name="picked_up" onClick={pickupOrder}>
-              Pickup
-            </button>
-            </>
-          ) : (
-            ""
-          )}
-          <button name="cancelled" onClick={cancelOrder}>
-            Cancel
-          </button>
-        </>
-      ) : (
-        ""
-      )}
-
-      {!claim.completed && claimType === "requests" ? (
-        
-        <>
-          {!claim.approved ? (
-            <>
-              <button name="approved" onClick={approveOrder}>
-                Approve
-              </button>
-              <button name="rejected" onClick={rejectOrder}>
-                Reject
-              </button>
-            </>
-          ) : (
-            <button name="cancelled" onClick={cancelOrder}>
-              Cancel
-            </button>
-          )}
-        </>
-      ) : (
-        ""
-      )}
-    </div>
+        {!claim.completed && claimType === "requests" ? (
+          <>
+            {!claim.approved ? (
+              <>
+                <p></p>
+                <Button.Group basic>
+                  <Button name="approved" onClick={approveOrder}>
+                    Approve
+                  </Button>
+                  <Button name="rejected" onClick={rejectOrder}>
+                    Reject
+                  </Button>
+                </Button.Group>
+              </>
+            ) : (
+              <>
+                <p>
+                  Please contact {titleCase(claim.claimed_by.first_name)} at{" "}
+                  {claim.claimed_by.email} with pick-up instructions
+                </p>
+                <Button.Group basic>
+                  <Button name="cancelled" onClick={cancelOrder}>
+                    Cancel
+                  </Button>
+                </Button.Group>
+              </>
+            )}
+          </>
+        ) : (
+          ""
+        )}
+      </Container>
+    </Card>
   );
 }
 
