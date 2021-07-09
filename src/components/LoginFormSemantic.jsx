@@ -49,7 +49,9 @@ const LoginForm = () => {
                         loggedIn: true,
                         username: json.user.username,
                     });
-                    history.goBack();
+                    window.hist = history;
+                    history.push('/');
+                    
                 });
         },
         [setState, api_url]

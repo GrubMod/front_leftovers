@@ -70,7 +70,7 @@ const SignUpForm = () => {
             style={{ height: '100vh' }}
             verticalAlign="middle"
         >
-            {state.loggedIn ? <Redirect to="/" /> : ''}   
+            {state.loggedIn ? <Redirect to="/public" /> : ''}   
             <Grid.Column style={{ maxWidth: 450 }}>
                 <Header color="gray" as="h2" textAlign="center">
                 <Image src={logo} style={{display:"block", margin:"auto"}} />

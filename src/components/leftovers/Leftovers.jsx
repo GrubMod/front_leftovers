@@ -29,6 +29,7 @@ function Leftovers() {
   return (
     leftovers && (
       <Container>
+        <Container style={{paddingTop:20, paddingBottom: 30, textAlign: "right"}}>
         {myFridge ? (
           <Button onClick={() => setMyFridge((b) => !b)} active>
             <Icon name="close" />
@@ -40,6 +41,7 @@ function Leftovers() {
             Show My Fridge
           </Button>
         )}
+        </Container>
 
         {myFridge ? (
           <div>
