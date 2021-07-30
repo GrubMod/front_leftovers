@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useContext } from "react";
-import axios from "axios";
-import { LeftoverContext } from "../../LeftoverContext";
+import React, { useEffect, useState, useContext } from 'react';
+import axios from 'axios';
+import { LeftoverContext } from '../../LeftoverContext';
 import {
   Grid,
   Button,
@@ -8,19 +8,22 @@ import {
   Container,
   Divider,
   Header,
-} from "semantic-ui-react";
-import Leftover from "./Leftover";
-import { Redirect } from "react-router-dom";
+  Dimmer,
+  Loader,
+} from 'semantic-ui-react';
+import Leftover from './Leftover';
+import { Redirect } from 'react-router-dom';
 
 function Leftovers() {
-  const [leftovers, setLeftovers] = useState([]);
+  const [leftovers, setLeftovers] = useState(null);
   const { state, api_url } = useContext(LeftoverContext);
   const [myFridge, setMyFridge] = useState(false);
 
   useEffect(() => {
     axios
       .get(`${api_url}/leftovers/`)
-      .then((res) => {
+      .then(res => {
+        console.log('THIS IS THE RESPONSE', res.data);
         setLeftovers(res.data);
       })
       .catch(console.error);
@@ -29,18 +32,20 @@ function Leftovers() {
   return (
     leftovers && (
       <Container>
-        <Container style={{paddingTop:20, paddingBottom: 30, textAlign: "right"}}>
-        {myFridge ? (
-          <Button onClick={() => setMyFridge((b) => !b)} active>
-            <Icon name="close" />
-            Close My Fridge
-          </Button>
-        ) : (
-          <Button onClick={() => setMyFridge((b) => !b)} color="teal">
-            <Icon name="food" />
-            Show My Fridge
-          </Button>
-        )}
+        <Container
+          style={{ paddingTop: 20, paddingBottom: 30, textAlign: 'right' }}
+        >
+          {myFridge ? (
+            <Button onClick={() => setMyFridge(b => !b)} active>
+              <Icon name="close" />
+              Close My Fridge
+            </Button>
+          ) : (
+            <Button onClick={() => setMyFridge(b => !b)} color="teal">
+              <Icon name="food" />
+              Show My Fridge
+            </Button>
+          )}
         </Container>
 
         {myFridge ? (
@@ -60,19 +65,40 @@ function Leftovers() {
             <Header as="h2">Leftovers in Your Area</Header>
             <Divider />
             <p>These are the leftovers that currently listed in your area.</p>
+            {leftovers === null ? (
+              <h3>
+                Loading leftovers
+                <Container>
+                  <Dimmer active inverted>
+                    <Loader inverted content="Loading" />
+                  </Dimmer>
+                </Container>
+              </h3>
+            ) : (
+              ''
+            )}
           </Container>
         )}
-
-        <Grid centered>
-          {leftovers
-            .filter((leftover) => {
-              if (myFridge) return leftover.owner === state.username;
-              return leftover.is_public;
-            })
-            .map((leftover, i) => (
-              <Leftover key={i} leftover={leftover} />
-            ))}
-        </Grid>
+        <Container style={{ marginTop: '30px' }}>
+          <Grid centered>
+            {leftovers.length === 0 ? (
+              <Container>
+                <br />
+                <h3>No leftovers available.</h3>{' '}
+              </Container>
+            ) : (
+              ''
+            )}
+            {leftovers
+              .filter(leftover => {
+                if (myFridge) return leftover.owner === state.username;
+                return leftover.is_public;
+              })
+              .map((leftover, i) => (
+                <Leftover key={i} leftover={leftover} />
+              ))}
+          </Grid>
+        </Container>
       </Container>
     )
   );
