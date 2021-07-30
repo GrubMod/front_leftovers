@@ -56,16 +56,29 @@ font-style: italic;
 
 */
 
-body{
+body {
   font-family: neue-haas-grotesk-text, sans-serif;
   font-weight: 400;
   font-style: normal;
 }
 
-#logo{
+#logo {
   padding-left: 5px;
   font-family: neue-haas-grotesk-text, sans-serif;
   font-weight: 700;
   font-style: normal;
   font-size: 1.4rem;
+}
+
+.add-leftover-steps {
+  margin-top: 20px;
+}
+
+.add-leftover-steps li {
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+}
+
+.add-leftover-steps li em {
+  font-size: 0.9rem;
 }

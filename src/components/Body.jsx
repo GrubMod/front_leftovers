@@ -9,6 +9,7 @@ import Claims from './leftovers/Claims';
 import LoginForm from './LoginFormSemantic';
 import Landing from './Landing';
 import SignUpForm from './SignUpFormSemantic';
+import HaveFood from './tensorflow/HaveFood';
 // import MagicInput from "./magicinput/MagicInput";
 
 function Body(props) {
@@ -27,6 +28,7 @@ function Body(props) {
                 <Route exact path="/add-leftover" component={AddLeftover} />
                 <Route exact path="/add" component={TensorFlow} />
                 <Route exact path="/public" component={Leftovers} />
+                <Route exact path="/havefood" component={HaveFood} />
 
                 <Route
                     exact
